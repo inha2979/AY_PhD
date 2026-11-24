@@ -98,6 +98,12 @@ Object.keys(ASSETS).forEach(function(k){
 function onReady(){
   ready=true;
   var b=document.getElementById("startBtn");b.disabled=false;b.textContent="Start";
+  var d=load();
+  if(d&&d.S&&!d.S.ended){
+    b.textContent="Continue · Day "+d.S.day;
+    document.getElementById("nameIn").value=d.name||"Ayoub";
+    document.getElementById("newBtn").style.display="inline-block";
+  }
 }
 document.getElementById("titleImg").src=ASSETS.p_travel;
 document.getElementById("face").src=ASSETS.f_smile;
@@ -828,20 +834,21 @@ setMuted(muted);
 function loop(){update();render();musicTick();requestAnimationFrame(loop);}
 
 /* ---------- start ---------- */
-function startGame(){
+function startGame(fresh){
   if(!ready)return;
   audioInit();
   var v=document.getElementById("nameIn").value.trim();
-  name=v||"Ayoub";
   var d=load();
-  if(d&&!d.S.ended&&d.name===name){S=Object.assign(newState(),d.S);}else{S=newState();}
+  if(fresh!==true&&d&&d.S&&!d.S.ended){name=d.name||v||"Ayoub";S=Object.assign(newState(),d.S);}
+  else{name=v||"Ayoub";S=newState();try{localStorage.removeItem("gradgame_en");}catch(e){}}
   spawnCheer();
   el.title.style.display="none";updateHUD();mode="play";
   if(S.day===1&&S.know===0&&S.energy===100){
     say(["Hey, "+name+"! You're a master's student with a PhD in sight. Let's get this thesis done.","📚 Read and write at the Library, 💼 earn a stipend at the TA / RA job, 🥐 bake at the Bakery.\nWhen you're worn out, pet the 🐱 white cat or have some 🍵 tea. Look out for 📣 In Ha, your biggest cheerleader, for a boost, and sleep at 🏠 Home when night falls.","Each study, job or bake takes a chunk of the day: 🌅 → ☀️ → 🌇 → 🌙. If Stress hits 100 you'll burn out, so watch it! Reach Research 100 and the 🎓 Defense Hall opens."],null,"p_travel");
   }
 }
-document.getElementById("startBtn").onclick=startGame;
+document.getElementById("startBtn").onclick=function(){startGame(false);};
+document.getElementById("newBtn").onclick=function(){startGame(true);};
 S=newState();
 loop();
 })();
