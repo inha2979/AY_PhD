@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ayoub's Road to the PhD</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="wrap">
+  <div id="hud">
+    <div class="top"><span class="who"><img id="face" alt=""><span id="dayTxt">Day 1</span></span><span><button id="muteBtn" title="Music on/off" style="font-size:15px;background:none;border:none;cursor:pointer;padding:0 6px;color:inherit">🔊</button><span id="rank">Master's Year 1</span></span></div>
+    <div><div class="lab"><span>⚡ Energy</span><span id="enTxt"></span></div><div class="bar"><i id="en"></i></div></div>
+    <div><div class="lab"><span>😵 Stress</span><span id="stTxt"></span></div><div class="bar"><i id="st"></i></div></div>
+    <div id="chips"></div>
+  </div>
+  <div id="stage">
+    <canvas id="cv" width="640" height="448"></canvas>
+    <div id="hint"></div>
+    <div id="dialog"></div>
+    <div id="menu"></div>
+    <button class="btn" id="endbtn">Play again</button>
+    <div id="title">
+      <img id="titleImg" alt="">
+      <h1>🎓 Ayoub's Road to the PhD</h1>
+      <p>Read papers, TA, burn out a little, bake some cookies,<br>hang out with a white cat... and finish the master's strong enough for a PhD.</p>
+      <input id="nameIn" value="Ayoub" maxlength="12" aria-label="Name">
+      <button class="btn" id="startBtn" disabled>Loading...</button>
+    </div>
+  </div>
+  <div id="pad">
+    <div class="dp">
+      <span></span><button data-k="up">▲</button><span></span>
+      <button data-k="left">◀</button><span></span><button data-k="right">▶</button>
+      <span></span><button data-k="down">▼</button><span></span>
+    </div>
+    <button class="act" id="actBtn">Action</button>
+  </div>
+  <div class="guide">Move: arrow keys / WASD · Interact &amp; continue dialogue: Space or Enter · Menus: ↑↓</div>
+</div>
+
+<script src="game.js"></script>
+</body>
+</html>
