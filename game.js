@@ -46,6 +46,14 @@ var ASSETS={
  "f_think": "assets/f_think.webp",
  "f_tired": "assets/f_tired.webp",
  "hall": "assets/hall.jpg",
+ "idle0": "assets/idle0.webp",
+ "idle1": "assets/idle1.webp",
+ "idle2": "assets/idle2.webp",
+ "idle3": "assets/idle3.webp",
+ "idle4": "assets/idle4.webp",
+ "idle5": "assets/idle5.webp",
+ "idle6": "assets/idle6.webp",
+ "idle7": "assets/idle7.webp",
  "o_bench": "assets/o_bench.webp",
  "o_flower": "assets/o_flower.webp",
  "o_lamp": "assets/o_lamp.webp",
@@ -153,7 +161,7 @@ function isBlocked(px,py){
 }
 
 /* ---------- entities ---------- */
-var P={x:10*T,y:6*T+16,dir:"down",step:0,moving:false};
+var P={x:10*T,y:6*T+16,dir:"down",step:0,moving:false,idle:0};
 var CHEER={x:176,y:200,t:0};
 var CHEER_SPOTS=[[176,200],[400,206],[560,208],[448,300]];
 function spawnCheer(){var s=CHEER_SPOTS[Math.floor(Math.random()*CHEER_SPOTS.length)];CHEER.x=s[0];CHEER.y=s[1];}
@@ -219,12 +227,36 @@ function drawBuilding(b){
 }
 
 /* ---- character from sprite sheet ---- */
-var WALK_SEQ=[1,0,1,2];
+function pdraw(name,cx,by,flip,sy,bob){
+  var im=IMG[name];if(!im||!im.naturalWidth)return false;
+  var sc=0.5,w=im.naturalWidth/AS*sc,h=im.naturalHeight/AS*sc*sy,y=by+2-bob;
+  ctx.save();
+  if(flip){ctx.translate(cx,0);ctx.scale(-1,1);ctx.drawImage(im,-w/2,y-h,w,h);}
+  else ctx.drawImage(im,cx-w/2,y-h,w,h);
+  ctx.restore();return true;
+}
 function playerSprite(cx,by,dir,step,moving){
-  var key=(dir==="left"||dir==="right")?"walk_left":(dir==="up"?"walk_up":"walk_down");
-  var fr=moving?WALK_SEQ[Math.floor(step/7)%4]:1;
+  var side=(dir==="left"||dir==="right");
+  var key=side?"walk_left":(dir==="up"?"walk_up":"walk_down");
+  var flip=(dir==="right");
   shadow(cx,by-1,13);
-  spr(key+fr,cx,by+2,0.5,dir==="right");
+  if(moving){
+    /* 4-phase cycle: contact(A) - passing - contact(B, mirrored) - passing; body rises on passing */
+    var ph=Math.floor(step/7)%4, fr, mir=false;
+    if(side){fr=[0,1,2,1][ph];}
+    else{fr=(ph%2===1)?1:0;mir=(ph===2);}
+    var bob=(ph%2===1)?1.6:0;
+    pdraw(key+fr,cx,by,flip!==mir,1,bob);
+  }else{
+    var t=P.idle||0;
+    if(dir==="down"&&IMG.idle0&&IMG.idle0.naturalWidth){
+      /* breathing loop x3, then a foot-tap loop */
+      var tap=(Math.floor(t/48)%4===3);
+      pdraw("idle"+(Math.floor(t/12)%4+(tap?4:0)),cx,by,false,1,0);
+    }else{
+      pdraw(key+1,cx,by,flip,1+0.018*Math.sin(t/12),0.6*Math.sin(t/12));
+    }
+  }
 }
 function catSprite(cx,by,face,moving,t,pose,purr){
   var sc=0.46,name;
@@ -644,6 +676,7 @@ function update(){
     detectNear();
     if(near){el.hint.textContent=TOUCH?hintText[near].replace("Space:","Tap:"):hintText[near];el.hint.style.display="block";}else el.hint.style.display="none";
   } else P.moving=false;
+  if(P.moving)P.idle=0;else P.idle++;
   if(!ending){
     CAT.t++;CHEER.t++;if(CAT.purr>0)CAT.purr--;
     var pt=PH[Math.min(3,S.slot)];for(var q=0;q<4;q++)tintCur[q]+=(pt.tint[q]-tintCur[q])*0.04;nightK+=(pt.night-nightK)*0.04;
