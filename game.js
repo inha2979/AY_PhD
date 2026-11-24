@@ -767,3 +767,4 @@ document.getElementById("startBtn").onclick=startGame;
 S=newState();
 loop();
 })();
+(function(){var w=document.getElementById("wrap");function fit(){var s=Math.min(window.innerWidth/740,window.innerHeight/835);s=Math.max(1,Math.min(2.4,s));w.style.zoom=s.toFixed(3);}window.addEventListener("resize",fit);fit();})();
