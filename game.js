@@ -97,14 +97,18 @@ document.getElementById("face").src=ASSETS.f_smile;
 var T=32, COLS=20, ROWS=14, AS=3, W=640, H=448, K=1;
 var cv=document.getElementById("cv"), ctx=cv.getContext("2d");
 function setupCanvas(){
-  var z=parseFloat(document.getElementById("wrap").style.zoom)||1,dpr=window.devicePixelRatio||1;
-  var cssW=Math.min(720*z,window.innerWidth)-26*z;
-  K=Math.max(1,Math.min(3,cssW*dpr/W));
+  var dpr=window.devicePixelRatio||1;
+  var cssW=cv.getBoundingClientRect().width||(Math.min(720,window.innerWidth)-26);
+  var nk=Math.max(1,Math.min(3,cssW*dpr/W));
+  if(Math.abs(nk-K)<0.05&&cv.width===Math.round(W*K))return;
+  K=nk;
   cv.width=Math.round(W*K);cv.height=Math.round(H*K);
   ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality="high";
 }
 window.__setupCanvas=setupCanvas;
-window.addEventListener("resize",function(){setTimeout(setupCanvas,50);});
+window.addEventListener("resize",function(){setTimeout(setupCanvas,60);});
+window.addEventListener("orientationchange",function(){setTimeout(setupCanvas,250);});
+if(window.ResizeObserver)new ResizeObserver(function(){setupCanvas();}).observe(cv);
 setupCanvas();
 
 /* ---------- state ---------- */
@@ -320,7 +324,7 @@ function nextLine(){
   }
   sfx("blip");el.dialog.style.display="block";el.dialog.classList.toggle("top",!!scene||ending);
   var pt=dlgPortrait?'<img class="pt" alt="" src="'+ASSETS[dlgPortrait]+'">':"";
-  el.dialog.innerHTML='<div class="row">'+pt+'<div>'+dlgQueue.shift().replace(/\n/g,"<br>")+'</div></div><small>Space ▶</small>';
+  el.dialog.innerHTML='<div class="row">'+pt+'<div>'+dlgQueue.shift().replace(/\n/g,"<br>")+'</div></div><small>'+(TOUCH?"Tap ▶":"Space ▶")+'</small>';
 }
 var menuItems=[], menuSel=0;
 function openMenu(title,items){
@@ -561,14 +565,46 @@ function pressAction(){
   if(mode==="play"&&near){actions[near]();}
 }
 el.dialog.onclick=function(){if(mode==="dialog")nextLine();};
-document.getElementById("actBtn").onclick=pressAction;
-Array.prototype.forEach.call(document.querySelectorAll("#pad [data-k]"),function(b){
-  var k=b.getAttribute("data-k");
-  function on(ev){ev.preventDefault();keys[k]=true;
-    if(mode==="menu"){if(k==="up"){menuSel=(menuSel+menuItems.length-1)%menuItems.length;refreshMenu();}if(k==="down"){menuSel=(menuSel+1)%menuItems.length;refreshMenu();}}}
-  function off(ev){ev.preventDefault();keys[k]=false;}
-  b.addEventListener("pointerdown",on);b.addEventListener("pointerup",off);b.addEventListener("pointerleave",off);b.addEventListener("pointercancel",off);
-});
+var TOUCH=(window.matchMedia&&matchMedia("(pointer:coarse)").matches)||("ontouchstart" in window);
+function buzz(ms){try{if(navigator.vibrate)navigator.vibrate(ms);}catch(e){}}
+var actBtn=document.getElementById("actBtn");
+actBtn.addEventListener("pointerdown",function(ev){ev.preventDefault();actBtn.classList.add("on");buzz(8);pressAction();});
+["pointerup","pointercancel","pointerleave"].forEach(function(t){actBtn.addEventListener(t,function(){actBtn.classList.remove("on");});});
+actBtn.addEventListener("keydown",function(ev){ev.preventDefault();});
+/* d-pad: touch & slide anywhere on the pad (joystick style) */
+var dp=document.querySelector("#pad .dp"), dpBtns={};
+Array.prototype.forEach.call(dp.querySelectorAll("[data-k]"),function(b){dpBtns[b.getAttribute("data-k")]=b;});
+function menuStep(k){
+  if(mode!=="menu")return;
+  if(k==="up"){menuSel=(menuSel+menuItems.length-1)%menuItems.length;refreshMenu();}
+  if(k==="down"){menuSel=(menuSel+1)%menuItems.length;refreshMenu();}
+}
+function setDirs(nd){
+  ["up","down","left","right"].forEach(function(k){
+    var on=!!nd[k];
+    if(on&&!keys[k]){menuStep(k);}
+    keys[k]=on;dpBtns[k].classList.toggle("on",on);
+  });
+}
+var dpId=null;
+function dpFrom(ev){
+  var r=dp.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
+  var dx=(ev.clientX-cx)/(r.width/2),dy=(ev.clientY-cy)/(r.height/2);
+  var d={};if(Math.hypot(dx,dy)<0.22){setDirs(d);return;}
+  var ax=Math.abs(dx),ay=Math.abs(dy);
+  if(ax>ay*0.45)d[dx<0?"left":"right"]=true;
+  if(ay>ax*0.45)d[dy<0?"up":"down"]=true;
+  setDirs(d);
+}
+dp.addEventListener("pointerdown",function(ev){ev.preventDefault();dpId=ev.pointerId;try{dp.setPointerCapture(ev.pointerId);}catch(e){}buzz(5);dpFrom(ev);});
+dp.addEventListener("pointermove",function(ev){if(ev.pointerId===dpId)dpFrom(ev);});
+function dpEnd(ev){if(ev.pointerId===dpId){dpId=null;setDirs({});}}
+dp.addEventListener("pointerup",dpEnd);dp.addEventListener("pointercancel",dpEnd);dp.addEventListener("lostpointercapture",dpEnd);
+window.addEventListener("blur",function(){setDirs({});});
+dp.addEventListener("contextmenu",function(e){e.preventDefault();});
+/* tap the floating hint bubble to interact, tap a menu title area is not needed */
+el.hint.classList.add("tap");el.hint.addEventListener("pointerdown",function(ev){ev.preventDefault();buzz(8);pressAction();});
+if(TOUCH){document.getElementById("guide").textContent="Hold & slide the pad to move · Tap ACTION (or the hint bubble) to talk and enter · Tap the dialogue to continue";}
 
 /* ---------- nearby detection ---------- */
 var near=null;
@@ -606,7 +642,7 @@ function update(){
     }
     if(S.confNotice){S.confNotice=false;say(["📩 Conference day! A conference is being held today.","The venue is in the bottom-left, just below the Bakery. Give a talk for a big Research boost, if you have the energy. (Today only, until night.)"],null,"p_travel");}
     detectNear();
-    if(near){el.hint.textContent=hintText[near];el.hint.style.display="block";}else el.hint.style.display="none";
+    if(near){el.hint.textContent=TOUCH?hintText[near].replace("Space:","Tap:"):hintText[near];el.hint.style.display="block";}else el.hint.style.display="none";
   } else P.moving=false;
   if(!ending){
     CAT.t++;CHEER.t++;if(CAT.purr>0)CAT.purr--;
