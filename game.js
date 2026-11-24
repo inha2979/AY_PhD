@@ -1,3 +1,4 @@
+
 (function(){
 "use strict";
 var ASSETS={
@@ -151,6 +152,7 @@ var buildings=[
 ];
 var garden={x:14*T,y:8*T,w:5*T,h:5*T};
 var trees=[[0,5,"t_tree"],[19,5,"t_pink"],[6,6,"t_pine"],[13,6,"t_tree"],[13,12,"t_pine"],[0,13,"t_tree"],[19,13,"t_pine"],[7,5,"t_pink"],[12,13,"t_tree"]];
+var XT={c:6,r:11};
 var decor=[{n:"o_lamp",c:6,r:4,h:56},{n:"o_lamp",c:13,r:4,h:56},{n:"o_bench",c:9,r:12,h:28},{n:"o_flower",c:6,r:9,h:28}];
 var blocked=[];
 (function(){
@@ -158,6 +160,7 @@ var blocked=[];
   buildings.forEach(function(b){for(var r=b.y;r<b.y+b.h;r++)for(var c=b.x;c<b.x+b.w;c++)blocked[r][c]=true;});
   trees.forEach(function(t){blocked[t[1]][t[0]]=true;});
   decor.forEach(function(d){blocked[d.r][d.c]=true;});
+  if(XTREE)blocked[XT.r][XT.c]=true;
 })();
 function isBlocked(px,py){
   if(isConfDay()&&px>134&&px<250&&py>392&&py<440)return true;
@@ -225,6 +228,7 @@ function drawBuilding(b){
     if(b.id==="hall"&&S.know<100)ctx.globalAlpha=0.6;
     ctx.drawImage(im,cx-dw/2,by-dh,dw,dh);
     ctx.restore();
+    if(XMAS&&b.id!=="hall")lightString(cx-dw*0.40,cx+dw*0.40,by-dh*0.42,6,13);
     if(b.id==="hall"&&S.know<100){ctx.font="22px sans-serif";ctx.textAlign="center";ctx.fillText("🔒",cx,by-14);}
   } else R(x,y,w,h,"#ccc");
   ctx.font="bold 13px sans-serif";ctx.textAlign="center";
@@ -233,15 +237,19 @@ function drawBuilding(b){
 }
 
 /* ---- character from sprite sheet ---- */
+var PTOP=0;
 function pdraw(name,cx,by,flip,sy,bob){
   var im=IMG[name];if(!im||!im.naturalWidth)return false;
-  var sc=0.5,w=im.naturalWidth/AS*sc,h=im.naturalHeight/AS*sc*sy,y=by+2-bob;
+  var sc=0.5,w=im.naturalWidth/AS*sc,h=im.naturalHeight/AS*sc*sy,y=by+2-bob;PTOP=y-h;
   ctx.save();
   if(flip){ctx.translate(cx,0);ctx.scale(-1,1);ctx.drawImage(im,-w/2,y-h,w,h);}
   else ctx.drawImage(im,cx-w/2,y-h,w,h);
   ctx.restore();return true;
 }
 function playerSprite(cx,by,dir,step,moving){
+  playerSprite0(cx,by,dir,step,moving);
+}
+function playerSprite0(cx,by,dir,step,moving){
   var side=(dir==="left"||dir==="right");
   var key=side?"walk_left":(dir==="up"?"walk_up":"walk_down");
   var flip=(dir==="right");
@@ -263,6 +271,52 @@ function playerSprite(cx,by,dir,step,moving){
       pdraw(key+1,cx,by,flip,1+0.018*Math.sin(t/12),0.6*Math.sin(t/12));
     }
   }
+}
+/* ---------- Christmas edition ---------- */
+var XMAS=true, XMAS_NOTE="", XSNOW=false, XTREE=false, XTXT=false;
+var snow=[];(function(){for(var i=0;i<85;i++)snow.push({x:Math.random()*640,y:Math.random()*448,r:0.8+Math.random()*1.7,v:0.3+Math.random()*0.7,p:Math.random()*6});})();
+function snowStep(){for(var i=0;i<snow.length;i++){var f=snow[i];f.y+=f.v;f.p+=0.03;f.x+=Math.sin(f.p)*0.4+0.15;if(f.y>W*0.7+3){f.y=-4;f.x=Math.random()*W;}if(f.x>W+3)f.x=-3;}}
+function drawSnow(){ctx.fillStyle="rgba(255,255,255,.92)";ctx.beginPath();for(var i=0;i<snow.length;i++){var f=snow[i];ctx.moveTo(f.x+f.r,f.y);ctx.arc(f.x,f.y,f.r,0,6.2832);}ctx.fill();}
+var LCOL=["#ff4d4d","#ffd24a","#5ad07a","#5ab8ff","#ff8ad8"];
+function lightString(x1,x2,y,sag,n){
+  ctx.strokeStyle="rgba(40,70,40,.8)";ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x1,y);ctx.quadraticCurveTo((x1+x2)/2,y+sag*2,x2,y);ctx.stroke();
+  for(var i=0;i<=n;i++){
+    var u=i/n,x=x1+(x2-x1)*u,yy=y+sag*2*u*(1-u)*2*0.5*2/2*1;
+    yy=y+sag*4*u*(1-u)*0.5;
+    var on=((i+Math.floor(endT2/18))%3)!==0;
+    ctx.globalAlpha=on?1:0.4;ctx.fillStyle=LCOL[i%5];
+    ctx.beginPath();ctx.arc(x,yy+2,2.2,0,6.2832);ctx.fill();
+    if(on){ctx.globalAlpha=0.25;ctx.beginPath();ctx.arc(x,yy+2,4.6,0,6.2832);ctx.fill();}
+  }
+  ctx.globalAlpha=1;
+}
+function santaHat(x,y,s,face){
+  ctx.save();ctx.translate(x,y);ctx.scale((face||1)*s,s);
+  ctx.fillStyle="#d8323a";ctx.beginPath();ctx.moveTo(-11,2);ctx.quadraticCurveTo(-9,-14,10,-13);ctx.quadraticCurveTo(7,-4,12,2);ctx.closePath();ctx.fill();
+  ctx.fillStyle="#b8242c";ctx.beginPath();ctx.moveTo(-3,-4);ctx.quadraticCurveTo(0,-11,10,-13);ctx.quadraticCurveTo(5,-6,4,-3);ctx.closePath();ctx.fill();
+  ctx.fillStyle="#fff";ctx.beginPath();ctx.ellipse(0,3,13,3.6,-0.08,0,6.2832);ctx.fill();
+  ctx.beginPath();ctx.arc(11,-13,3.3,0,6.2832);ctx.fill();
+  ctx.restore();
+}
+function xmasTree(cx,by){
+  shadow(cx,by-1,17);
+  ctx.fillStyle="#6b4a2e";ctx.fillRect(cx-3,by-8,6,8);
+  var tiers=[[by-8,20,26,"#2f7d3a"],[by-26,16,24,"#3a9447"],[by-42,11,22,"#4aab55"]];
+  tiers.forEach(function(t){
+    ctx.fillStyle=t[3];ctx.beginPath();ctx.moveTo(cx,t[0]-t[2]);ctx.lineTo(cx-t[1],t[0]);ctx.lineTo(cx+t[1],t[0]);ctx.closePath();ctx.fill();
+    ctx.strokeStyle="rgba(255,255,255,.85)";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(cx-t[1]+1,t[0]-1);ctx.lineTo(cx+t[1]-1,t[0]-1);ctx.stroke();
+  });
+  var L=[[-8,-12],[6,-16],[-4,-30],[8,-33],[-11,-6],[10,-6],[0,-46],[-3,-42],[4,-22],[-7,-22]];
+  for(var i=0;i<L.length;i++){
+    var on=((i+Math.floor(endT2/16))%3)!==0;
+    ctx.globalAlpha=on?1:0.35;ctx.fillStyle=LCOL[i%5];
+    ctx.beginPath();ctx.arc(cx+L[i][0],by+L[i][1],2,0,6.2832);ctx.fill();
+  }
+  ctx.globalAlpha=1;
+  var tw=0.7+0.3*Math.sin(endT2/10);
+  ctx.fillStyle="#ffd24a";ctx.globalAlpha=tw;ctx.font="14px sans-serif";ctx.textAlign="center";ctx.fillText("★",cx,by-60);ctx.globalAlpha=1;
+  ctx.fillStyle="#e24a4a";ctx.fillRect(cx-19,by-6,9,7);ctx.fillStyle="#fff";ctx.fillRect(cx-15,by-6,1.5,7);
+  ctx.fillStyle="#4a8ae2";ctx.fillRect(cx+11,by-5,8,6);ctx.fillStyle="#fff";ctx.fillRect(cx+14.5,by-5,1.5,6);
 }
 function catSprite(cx,by,face,moving,t,pose,purr){
   var sc=0.46,name;
@@ -446,7 +500,7 @@ function doBake(){
   S.money-=10;S.energy-=15;S.stress=Math.max(0,S.stress-12);S.bake++;
   var n=1+Math.floor(S.bake/3)+(S.slot===0?1:0);S.cookies+=n;S.baked+=n;
   setFace("f_happy",4000);
-  say(["Knead the dough, wait for the oven... the whole place smells amazing. 🥐","Made "+n+" cookie"+(n>1?"s":"")+"!"+(S.slot===0?"\n🌅 Morning batch: +1 bonus cookie!":"")+"\n(Stress -12, Energy -15, Ingredients -$10)"+tn()],afterTimed,"p_bake");
+  say([XTXT?"Knead the dough, cut out little stars and trees, wait for the oven... the whole place smells like Christmas. 🎄":"Knead the dough, wait for the oven... the whole place smells amazing. 🥐","Made "+n+(XTXT?" Christmas":"")+" cookie"+(n>1?"s":"")+"!"+(S.slot===0?"\n🌅 Morning batch: +1 bonus cookie!":"")+"\n(Stress -12, Energy -15, Ingredients -$10)"+tn()],afterTimed,"p_bake");
 }
 function doTea(){
   if(S.teaKey===pKey()){say("You've already had tea this time of day. Maybe a different activity?",null,"p_tea");return;}
@@ -549,7 +603,7 @@ var actions={
   },
   lib:function(){openMenu("📚 Library",[{label:"📖 Read & write (Energy -20)",fn:doStudy},{label:"Leave"}]);},
   cafe:function(){openMenu("💼 TA / RA Job",[{label:"💼 Work a shift (Energy -25, +$25)",fn:doWork},{label:"Leave"}]);},
-  bakery:function(){openMenu("🥐 Bakery",[{label:"🍪 Bake (Ingredients $10)",fn:doBake},{label:"Leave"}]);},
+  bakery:function(){openMenu("🥐 Bakery",[{label:(XTXT?"🎄 Bake Christmas cookies (Ingredients $10)":"🍪 Bake (Ingredients $10)"),fn:doBake},{label:"Leave"}]);},
   hall:function(){
     if(S.know<100){say("🎓 The Defense Hall is still locked.\n(Opens when Research hits 100 and the thesis is ready. You're at "+S.know+"/100.)",null,"f_think");return;}
     say(["The Defense Hall doors swing open. The committee is waiting..."],startEnding,"robe_stand");
@@ -567,10 +621,12 @@ function startEnding(){
     "And the best part: the PhD offer letter arrived. Welcome to the doctoral program! 📬",
     "In Ha burst in with pom-poms and cheered the loudest of all! 📣"+(S.cheers>0?" (You felt her cheers "+S.cheers+" time"+(S.cheers>1?"s":"")+" along the way.)":""),
     S.cat>=20?"The white cat was by your side through every late night in the lab. 🐱":"The white cat even came to watch the defense. 🐱",
-    S.baked>0?"The "+S.baked+" cookies you baked fueled the whole lab and the committee too. 🍪":"Next time, bake some celebration cookies for the lab. 🍪",
+    S.baked>0?"The "+S.baked+(XTXT?" Christmas":"")+" cookies you baked fueled the whole lab and the committee too. 🍪":"Next time, bake some celebration cookies for the lab. 🍪",
     S.burn>0?"Some days you had to stop and rest, and that's exactly how you'll last through a PhD.":"Steady, without pushing too hard. That's the best habit for a PhD.",
-    "The next chapter is longer and harder, but everything you've built will be cheering you on.\nCongratulations, future Dr. "+name+"! We're rooting for every step ahead. 🎉"
+    "The next chapter is longer and harder, but everything you've built will be cheering you on.\nCongratulations, future Dr. "+name+"! We're rooting for every step ahead. 🎉",
+    XTXT?"Merry Christmas, "+name+"! ❄️🎄 May the whole year ahead be as warm as this one."+(XMAS_NOTE?"\n"+XMAS_NOTE:""):null
   ];
+  lines=lines.filter(Boolean);
   say(lines,function(){mode="end";endDone=true;el.endbtn.style.display="block";},"robe_jump");
 }
 function resetGame(){
@@ -662,7 +718,7 @@ function detectNear(){
 /* ---------- update / render ---------- */
 var catMoving=false;
 function update(){
-  endT2++;
+  endT2++;snowStep();
   if(mode==="play"){
     var dx=0,dy=0,sp=2.2;
     if(keys.left)dx-=1;if(keys.right)dx+=1;if(keys.up)dy-=1;if(keys.down)dy+=1;
@@ -717,6 +773,7 @@ function render(){
   }
   var ents=[];
   trees.forEach(function(t){ents.push({y:t[1]*T+T,f:function(){shadow(t[0]*T+16,t[1]*T+T-3,14);sprH(t[2],t[0]*T+16,t[1]*T+T+2,62);}});});
+  if(XMAS&&XTREE)ents.push({y:XT.r*T+T,f:function(){xmasTree(XT.c*T+16,XT.r*T+T+2);}});
   decor.forEach(function(d){ents.push({y:d.r*T+T,f:function(){sprH(d.n,d.c*T+16,d.r*T+T,d.h);}});});
   if(cheerHere())ents.push({y:CHEER.y,f:function(){cheerSprite(CHEER.x,CHEER.y,CHEER.t,S.cheerDay!==S.day);if(S.cheerDay!==S.day){ctx.font="18px sans-serif";ctx.textAlign="center";ctx.fillText("📣",CHEER.x,CHEER.y-62+Math.sin(CHEER.t/10)*3);}}});
   ents.push({y:CAT.y,f:function(){catSprite(CAT.x,CAT.y,CAT.face,catMoving,CAT.t,CAT.pose,CAT.purr);}});
@@ -745,6 +802,7 @@ function render(){
       ctx.fillText("🎓 Congratulations, Future Doctor! 🎓",W/2,48);
       ctx.font="bold 16px sans-serif";
       ctx.strokeText(name+"'s Road to the PhD",W/2,76);ctx.fillText(name+"'s Road to the PhD",W/2,76);
+      if(XMAS&&XTXT){ctx.fillStyle="#c0392b";ctx.font="bold 18px sans-serif";ctx.strokeText("🎄 Merry Christmas! 🎄",W/2,104);ctx.fillText("🎄 Merry Christmas! 🎄",W/2,104);}
     }
     var ph=Math.floor(endT/100)%3, cx=W/2, by=398;
     shadow(cx,by-2,62);
@@ -758,6 +816,7 @@ function render(){
     spr(cat,cx+175,by,1.25,true);
   }
   if(scene)drawScene();
+  if(XMAS&&XSNOW&&!scene)drawSnow();
   confetti.forEach(function(c){ctx.save();ctx.translate(c.x,c.y);ctx.rotate(c.r);ctx.fillStyle=c.c;ctx.fillRect(-c.s/2,-c.s/2,c.s,c.s*1.6);ctx.restore();});
 }
 /* ---------- chiptune music (WebAudio, no files) ---------- */
@@ -766,7 +825,14 @@ try{muted=localStorage.getItem("gradgame_mute")==="1";}catch(e){}
 var NOTE={C:0,D:2,E:4,F:5,G:7,A:9,B:11};
 function mf(s){if(!s||s==="-")return 0;var m=/^([A-G])(#?)(\d)$/.exec(s);var n=NOTE[m[1]]+(m[2]?1:0)+12*(+m[3]+1);return 440*Math.pow(2,(n-69)/12);}
 function PN(s){return s.split(/\s+/).map(mf);}
+function M(){return Array.prototype.slice.call(arguments).join(" ");}
 var TRACKS={
+ xmas:{bpm:126,lead:PN(M("E5 - E5 - E5 - - -","E5 - E5 - E5 - - -","E5 - G5 - C5 - D5 -","E5 - - - - - - -","F5 - F5 - F5 - F5 -","F5 - E5 - E5 - E5 E5","E5 - D5 - D5 - E5 -","D5 - - - G5 - - -","E5 - E5 - E5 - - -","E5 - E5 - E5 - - -","E5 - G5 - C5 - D5 -","E5 - - - - - - -","F5 - F5 - F5 - F5 -","F5 - E5 - E5 - E5 E5","G5 - G5 - F5 - D5 -","C5 - - - - - - -")),
+      bass:PN(M("C3 - - - C3 - - -","C3 - - - C3 - - -","C3 - - - G2 - - -","C3 - - - C3 - - -","F3 - - - F3 - - -","C3 - - - C3 - - -","G2 - - - G2 - - -","G2 - - - G2 - - -","C3 - - - C3 - - -","C3 - - - C3 - - -","C3 - - - G2 - - -","C3 - - - C3 - - -","F3 - - - F3 - - -","C3 - - - C3 - - -","G2 - - - G2 - - -","C3 - - - - - - -")),
+      lw:"square",lg:0.10,bw:"triangle",bg:0.22,hat:true,len:0.6},
+ silent:{bpm:84,lead:PN(M("G4 - - A4 G4 -","E4 - - - - -","G4 - - A4 G4 -","E4 - - - - -","D5 - - D5 - -","B4 - - - - -","C5 - - C5 - -","G4 - - - - -","A4 - - A4 - C5","B4 - A4 - - -","G4 - - A4 G4 -","E4 - - - - -","A4 - - A4 - C5","B4 - A4 - - -","G4 - - A4 G4 -","E4 - - - - -","D5 - - D5 - F5","D5 - B4 - - -","C5 - - E5 - -","C5 - G4 - E4 -","F4 - D4 - - -","C4 - - - - -")),
+      bass:PN(M("C3 - E3 - G3 -","C3 - E3 - G3 -","C3 - E3 - G3 -","C3 - E3 - G3 -","G2 - B2 - D3 -","G2 - B2 - D3 -","C3 - E3 - G3 -","C3 - E3 - G3 -","F3 - A3 - C4 -","G2 - B2 - D3 -","C3 - E3 - G3 -","C3 - E3 - G3 -","F3 - A3 - C4 -","G2 - B2 - D3 -","C3 - E3 - G3 -","C3 - E3 - G3 -","G2 - B2 - D3 -","G2 - B2 - D3 -","C3 - E3 - G3 -","C3 - E3 - G3 -","F3 - A3 - C4 -","C3 - - - - -")),
+      lw:"triangle",lg:0.2,bw:"sine",bg:0.28,hat:false,len:1.4},
  day:{bpm:112,lead:PN("E5 - G5 - E5 - C5 - D5 - F5 - D5 - B4 - C5 E5 G5 E5 C6 - G5 - F5 E5 D5 - C5 - - -  E5 - G5 - A5 - G5 - F5 - A5 - G5 - E5 - D5 F5 A5 F5 D5 - B4 - C5 - E5 - G5 - C6 -"),
       bass:PN("C3 - G3 - C3 - G3 - G2 - D3 - G2 - D3 - A2 - E3 - F2 - C3 - F2 - C3 - G2 - G3 - C3 - G3 - C3 - G3 - A2 - E3 - A2 - E3 - F2 - C3 - D3 - A3 - G2 - D3 - C3 - - -"),
       lw:"square",lg:0.10,bw:"triangle",bg:0.22,hat:true,len:0.7},
@@ -806,7 +872,7 @@ function sched(){
   while(nextT<AC.currentTime+0.25){
     var i=stepI%T_.lead.length;
     tone(T_.lead[i],nextT,sd*T_.len*1.6,T_.lw,T_.lg);
-    if(curTrack==="night"&&T_.lead[i])tone(T_.lead[i],nextT+sd*1.5,sd*2,T_.lw,T_.lg*0.35);
+    if((curTrack==="night"||curTrack==="silent")&&T_.lead[i])tone(T_.lead[i],nextT+sd*1.5,sd*2,T_.lw,T_.lg*0.35);
     tone(T_.bass[i%T_.bass.length],nextT,sd*1.7,T_.bw,T_.bg);
     if(T_.hat&&stepI%2===1)hat(nextT);
     nextT+=sd;stepI++;
@@ -824,7 +890,7 @@ function setMuted(m){
 }
 function musicTick(){
   if(!AC)return;
-  var want=(mode==="title"||!S)?"day":ending?"end":(S.slot===3?"night":"day");
+  var want=(mode==="title"||!S)?(XMAS?"xmas":"day"):ending?"end":(S.slot===3?(XMAS?"silent":"night"):(XMAS?"xmas":"day"));
   setTrack(want);
 }
 document.addEventListener("visibilitychange",function(){if(!AC)return;if(document.hidden)AC.suspend();else if(!muted)AC.resume();});
@@ -844,7 +910,7 @@ function startGame(fresh){
   spawnCheer();
   el.title.style.display="none";updateHUD();mode="play";
   if(S.day===1&&S.know===0&&S.energy===100){
-    say(["Hey, "+name+"! You're a master's student with a PhD in sight. Let's get this thesis done.","📚 Read and write at the Library, 💼 earn a stipend at the TA / RA job, 🥐 bake at the Bakery.\nWhen you're worn out, pet the 🐱 white cat or have some 🍵 tea. Look out for 📣 In Ha, your biggest cheerleader, for a boost, and sleep at 🏠 Home when night falls.","Each study, job or bake takes a chunk of the day: 🌅 → ☀️ → 🌇 → 🌙. If Stress hits 100 you'll burn out, so watch it! Reach Research 100 and the 🎓 Defense Hall opens."],null,"p_travel");
+    say(["Hey, "+name+"! You're a master's student with a PhD in sight. Let's get this thesis done."+(XTXT?"\n🎄 It's Christmas season, and snow is falling on campus. ❄️":""),"📚 Read and write at the Library, 💼 earn a stipend at the TA / RA job, 🥐 bake at the Bakery.\nWhen you're worn out, pet the 🐱 white cat or have some 🍵 tea. Look out for 📣 In Ha, your biggest cheerleader, for a boost, and sleep at 🏠 Home when night falls.","Each study, job or bake takes a chunk of the day: 🌅 → ☀️ → 🌇 → 🌙. If Stress hits 100 you'll burn out, so watch it! Reach Research 100 and the 🎓 Defense Hall opens."],null,"p_travel");
   }
 }
 document.getElementById("startBtn").onclick=function(){startGame(false);};
