@@ -184,7 +184,7 @@ var buildings=[
  {id:"hall",  x:8, y:8, w:4,h:3,img:"b_hall",  label:"🎓 Defense Hall"}
 ];
 var garden={x:14*T,y:8*T,w:5*T,h:5*T};
-var trees=[[0,5,"t_tree"],[19,5,"t_pink"],[6,6,"t_pine"],[13,6,"t_tree"],[13,12,"t_pine"],[0,13,"t_tree"],[19,13,"t_pine"],[7,5,"t_pink"],[12,13,"t_tree"]];
+var trees=[[0,5,"t_tree"],[19,5,"t_pink"],[6,7,"t_pine"],[13,7,"t_tree"],[13,12,"t_pine"],[0,13,"t_tree"],[19,13,"t_pine"],[7,4,"t_pink"],[12,13,"t_tree"]];
 var XT={c:6,r:11};
 var decor=[{n:"o_lamp",c:6,r:4,h:56},{n:"o_lamp",c:13,r:4,h:56},{n:"o_bench",c:9,r:12,h:28},{n:"o_flower",c:6,r:9,h:28}];
 /* Christmas switches: XMAS = lights + music, XSNOW = snow, XTREE = drawn tree, XTXT = Christmas wording, XART = sprite decorations */
