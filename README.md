@@ -15,7 +15,8 @@ Controls: arrow keys / WASD to move, Space or Enter to interact and continue dia
 - index.html : page layout
 - style.css : styles
 - game.js : all game logic, text, balance numbers, and chiptune music (WebAudio)
-- assets/ : sprites, backgrounds, portraits (PNG/JPG). Replace a file with the same name to swap art.
+- assets/ : sprites, backgrounds, portraits (WebP/JPG). Replace a file with the same name to swap art.
+- assets/xmas/ : Christmas sprite pack (not used yet, see XMAS_ASSETS.md)
 
 ## Publish with GitHub Pages
 Repo Settings > Pages > Deploy from a branch > main / (root).

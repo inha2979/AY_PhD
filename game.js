@@ -85,7 +85,26 @@ var ASSETS={
  "walk_left2": "assets/walk_left2.webp",
  "walk_up0": "assets/walk_up0.webp",
  "walk_up1": "assets/walk_up1.webp",
- "walk_up2": "assets/walk_up2.webp"
+ "walk_up2": "assets/walk_up2.webp",
+ "x_candle_f0": "assets/xmas/candle_f0.webp",
+ "x_candle_f1": "assets/xmas/candle_f1.webp",
+ "x_candle_f2": "assets/xmas/candle_f2.webp",
+ "x_cocoa_mug": "assets/xmas/cocoa_mug.webp",
+ "x_fireplace_mini_f0": "assets/xmas/fireplace_mini_f0.webp",
+ "x_fireplace_mini_f1": "assets/xmas/fireplace_mini_f1.webp",
+ "x_fireplace_mini_f2": "assets/xmas/fireplace_mini_f2.webp",
+ "x_garland_f0": "assets/xmas/garland_f0.webp",
+ "x_garland_f1": "assets/xmas/garland_f1.webp",
+ "x_garland_f2": "assets/xmas/garland_f2.webp",
+ "x_gingerbread": "assets/xmas/gingerbread.webp",
+ "x_lamp_post": "assets/xmas/lamp_post.webp",
+ "x_reindeer_rest": "assets/xmas/reindeer_rest.webp",
+ "x_snowman": "assets/xmas/snowman.webp",
+ "x_tree_large": "assets/xmas/tree_large.webp",
+ "x_tree_medium": "assets/xmas/tree_medium.webp",
+ "x_tree_small": "assets/xmas/tree_small.webp",
+ "x_window_night": "assets/xmas/window_night.webp",
+ "x_window_warm": "assets/xmas/window_warm.webp"
 };
 
 /* ---------- image loading ---------- */
@@ -106,6 +125,10 @@ function onReady(){
     document.getElementById("newBtn").style.display="inline-block";
   }
 }
+
+/* Christmas sprites (lazy): not loaded at start. Call loadXmas() once, then use IMG["x_<name>"] / spr("x_<name>",...). See XMAS_ASSETS.md */
+var XMAS_NAMES="candle_f0 candle_f1 candle_f2 snowglobe_f0 snowglobe_f1 snowglobe_f2 garland_f0 garland_f1 garland_f2 fireplace_mini_f0 fireplace_mini_f1 fireplace_mini_f2 tree_small tree_medium tree_large wreath_stand snowman reindeer_rest reindeer_lights fence_lights holly_snow_bush lamp_post snow_pile window_night window_warm armchair round_table_mug bookshelf fireplace_big sofa bed nightstand_lamp floor_lamp dining_set rug gift_green gift_white gift_sack candy_cane gingerbread tree_cookie star ornament snowflake lantern_dim lantern_lit poinsettia cocoa_mug cake_choco cake_berry yule_log letter card book_stack tile_wood tile_parquet tile_red tile_plaid tile_snow_cream tile_snow_blue banner_tree banner_snowflake banner_reindeer banner_blank bubble_exclaim bubble_heart gift_icon sparkle_a sparkle_b".split(" ");
+function loadXmas(){XMAS_NAMES.forEach(function(n){if(IMG["x_"+n])return;var im=new Image();im.src="assets/xmas/"+n+".webp";IMG["x_"+n]=im;});}
 document.getElementById("titleImg").src=ASSETS.p_travel;
 document.getElementById("face").src=ASSETS.f_smile;
 
@@ -154,6 +177,10 @@ var garden={x:14*T,y:8*T,w:5*T,h:5*T};
 var trees=[[0,5,"t_tree"],[19,5,"t_pink"],[6,6,"t_pine"],[13,6,"t_tree"],[13,12,"t_pine"],[0,13,"t_tree"],[19,13,"t_pine"],[7,5,"t_pink"],[12,13,"t_tree"]];
 var XT={c:6,r:11};
 var decor=[{n:"o_lamp",c:6,r:4,h:56},{n:"o_lamp",c:13,r:4,h:56},{n:"o_bench",c:9,r:12,h:28},{n:"o_flower",c:6,r:9,h:28}];
+/* Christmas switches: XMAS = lights + music, XSNOW = snow, XTREE = drawn tree, XTXT = Christmas wording, XART = sprite decorations */
+var XMAS=true, XMAS_NOTE="", XSNOW=false, XTREE=false, XTXT=false, XART=true;
+var XMAP={t_tree:["x_tree_small",52],t_pink:["x_tree_medium",56],t_pine:["x_tree_large",60],o_lamp:["x_lamp_post",58]};
+if(XART){decor.push({n:"x_snowman",c:18,r:8,h:46},{n:"x_reindeer_rest",c:15,r:12,h:40});}
 var blocked=[];
 (function(){
   for(var r=0;r<ROWS;r++){blocked[r]=[];for(var c=0;c<COLS;c++)blocked[r][c]=false;}
@@ -273,7 +300,7 @@ function playerSprite0(cx,by,dir,step,moving){
   }
 }
 /* ---------- Christmas edition ---------- */
-var XMAS=true, XMAS_NOTE="", XSNOW=false, XTREE=false, XTXT=false;
+
 var snow=[];(function(){for(var i=0;i<85;i++)snow.push({x:Math.random()*640,y:Math.random()*448,r:0.8+Math.random()*1.7,v:0.3+Math.random()*0.7,p:Math.random()*6});})();
 function snowStep(){for(var i=0;i<snow.length;i++){var f=snow[i];f.y+=f.v;f.p+=0.03;f.x+=Math.sin(f.p)*0.4+0.15;if(f.y>W*0.7+3){f.y=-4;f.x=Math.random()*W;}if(f.x>W+3)f.x=-3;}}
 function drawSnow(){ctx.fillStyle="rgba(255,255,255,.92)";ctx.beginPath();for(var i=0;i<snow.length;i++){var f=snow[i];ctx.moveTo(f.x+f.r,f.y);ctx.arc(f.x,f.y,f.r,0,6.2832);}ctx.fill();}
@@ -342,11 +369,24 @@ function drawOffice(){
     for(var k=0;k<12&&bx<200;k++){var b=OFFICE_BOOKS[bi++%80];ctx.fillStyle=b[0];ctx.fillRect(bx,sy+54-b[2],b[1],b[2]);bx+=b[1]+2;}
   }
   // window
+  if(!XART){
   ctx.fillStyle="#3f2b1c";ctx.fillRect(470,80,124,150);
   ctx.fillStyle="#bfe0f2";ctx.fillRect(476,86,112,138);ctx.fillStyle="rgba(255,255,255,.35)";ctx.fillRect(476,86,112,40);
   ctx.fillStyle="#3f2b1c";ctx.fillRect(529,86,4,138);ctx.fillRect(476,152,112,4);
+  }
   // desk edge
   ctx.fillStyle="#5a3c26";ctx.fillRect(250,380,380,14);ctx.fillStyle="#46301e";ctx.fillRect(250,394,380,54);
+  if(XART)drawOfficeXmas();
+}
+function sprW(name,cx,by,w){var im=IMG[name];if(!im||!im.naturalWidth)return;var h=im.naturalHeight*w/im.naturalWidth;ctx.drawImage(im,cx-w/2,by-h,w,h);}
+function drawOfficeXmas(){
+  var f=Math.floor(endT2/14)%3;
+  for(var gx=0;gx<5;gx++)sprW("x_garland_f"+((f+gx)%3),gx*140+70,72,150);
+  sprW((S&&S.slot===3)?"x_window_night":"x_window_warm",532,240,150);
+  sprW("x_tree_small",612,356,66);
+  sprW("x_fireplace_mini_f"+f,318,352,132);
+  sprW("x_candle_f"+f,292,386,34);
+  sprW("x_cocoa_mug",590,386,30);
 }
 function drawScene(){
   if(!scene)return;
@@ -373,6 +413,7 @@ function burst(n){
 }
 
 /* ---------- ui ---------- */
+function ICON(n,fb){return (XART&&ASSETS["x_"+n])?'<img class="ic" src="'+ASSETS["x_"+n]+'" alt="">':fb;}
 var el={dayTxt:null,rank:null,en:null,st:null,enTxt:null,stTxt:null,chips:null,hint:null,dialog:null,menu:null,title:null,endbtn:null,face:null};
 Object.keys(el).forEach(function(k){el[k]=document.getElementById(k);});
 
@@ -396,7 +437,7 @@ function updateHUD(){
     '<span class="chip">📖 Research '+S.know+'/100</span>'+
     '<span class="chip">💰 $'+S.money+'</span>'+
     '<span class="chip">🥐 Baking Lv.'+(1+Math.floor(S.bake/3))+'</span>'+
-    '<span class="chip">🍪 Cookies '+S.cookies+'</span>'+
+    '<span class="chip">'+ICON("gingerbread","🍪")+' Cookies '+S.cookies+'</span>'+
     '<span class="chip">🐱 Cat bond '+S.cat+'</span>'+
     (S.boost>0?'<span class="chip" style="background:#ffd9d2;font-weight:700">📣 Cheer Boost ×1.5 ('+S.boost+' left)</span>':'')+
     (S.hw>0?'<span class="chip" style="background:#e3dcf7;font-weight:700">📝 Homework: '+S.hw+' study left</span>':'')+
@@ -423,7 +464,7 @@ function openMenu(title,items){
   menuItems=items;menuSel=0;mode="menu";
   el.menu.innerHTML="<h3>"+title+"</h3>";
   items.forEach(function(it,i){
-    var b=document.createElement("button");b.textContent=it.label;b.disabled=!!it.off;
+    var b=document.createElement("button");b.innerHTML=it.label;b.disabled=!!it.off;
     b.onclick=function(){menuSel=i;chooseMenu();};
     el.menu.appendChild(b);
   });
@@ -603,12 +644,12 @@ var actions={
   },
   lib:function(){openMenu("📚 Library",[{label:"📖 Read & write (Energy -20)",fn:doStudy},{label:"Leave"}]);},
   cafe:function(){openMenu("💼 TA / RA Job",[{label:"💼 Work a shift (Energy -25, +$25)",fn:doWork},{label:"Leave"}]);},
-  bakery:function(){openMenu("🥐 Bakery",[{label:(XTXT?"🎄 Bake Christmas cookies (Ingredients $10)":"🍪 Bake (Ingredients $10)"),fn:doBake},{label:"Leave"}]);},
+  bakery:function(){openMenu("🥐 Bakery",[{label:(XTXT?"🎄 Bake Christmas cookies (Ingredients $10)":ICON("gingerbread","🍪")+" Bake (Ingredients $10)"),fn:doBake},{label:"Leave"}]);},
   hall:function(){
     if(S.know<100){say("🎓 The Defense Hall is still locked.\n(Opens when Research hits 100 and the thesis is ready. You're at "+S.know+"/100.)",null,"f_think");return;}
     say(["The Defense Hall doors swing open. The committee is waiting..."],startEnding,"robe_stand");
   },
-  cat:function(){openMenu("🐱 White Cat",[{label:"🤚 Pet the cat",fn:petCat},{label:"🍪 Give a treat (you have "+S.cookies+")",fn:giveCookie},{label:"Leave"}]);}
+  cat:function(){openMenu("🐱 White Cat",[{label:"🤚 Pet the cat",fn:petCat},{label:ICON("gingerbread","🍪")+" Give a treat (you have "+S.cookies+")",fn:giveCookie},{label:"Leave"}]);}
 };
 
 /* ---------- ending ---------- */
@@ -772,9 +813,9 @@ function render(){
     ctx.font="bold 13px sans-serif";ctx.textAlign="center";ctx.fillStyle="rgba(255,250,241,.92)";ctx.fillRect(194-52,428,104,16);ctx.fillStyle="#3b2a22";ctx.fillText("🎤 Conference",194,440);
   }
   var ents=[];
-  trees.forEach(function(t){ents.push({y:t[1]*T+T,f:function(){shadow(t[0]*T+16,t[1]*T+T-3,14);sprH(t[2],t[0]*T+16,t[1]*T+T+2,62);}});});
+  trees.forEach(function(t){ents.push({y:t[1]*T+T,f:function(){shadow(t[0]*T+16,t[1]*T+T-3,14);var xm=XART&&XMAP[t[2]];sprH(xm?xm[0]:t[2],t[0]*T+16,t[1]*T+T+2,xm?xm[1]:62);}});});
   if(XMAS&&XTREE)ents.push({y:XT.r*T+T,f:function(){xmasTree(XT.c*T+16,XT.r*T+T+2);}});
-  decor.forEach(function(d){ents.push({y:d.r*T+T,f:function(){sprH(d.n,d.c*T+16,d.r*T+T,d.h);}});});
+  decor.forEach(function(d){ents.push({y:d.r*T+T,f:function(){var xm=XART&&XMAP[d.n];sprH(xm?xm[0]:d.n,d.c*T+16,d.r*T+T,xm?xm[1]:d.h);}});});
   if(cheerHere())ents.push({y:CHEER.y,f:function(){cheerSprite(CHEER.x,CHEER.y,CHEER.t,S.cheerDay!==S.day);if(S.cheerDay!==S.day){ctx.font="18px sans-serif";ctx.textAlign="center";ctx.fillText("📣",CHEER.x,CHEER.y-62+Math.sin(CHEER.t/10)*3);}}});
   ents.push({y:CAT.y,f:function(){catSprite(CAT.x,CAT.y,CAT.face,catMoving,CAT.t,CAT.pose,CAT.purr);}});
   if(!ending)ents.push({y:P.y,f:function(){playerSprite(P.x,P.y,P.dir,P.step,P.moving);}});
