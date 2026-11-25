@@ -1162,6 +1162,14 @@ actBtn.addEventListener("pointerdown",function(ev){ev.preventDefault();actBtn.cl
 actBtn.addEventListener("keydown",function(ev){ev.preventDefault();});
 /* d-pad: touch & slide anywhere on the pad (joystick style) */
 var dp=document.querySelector("#pad .dp"), dpBtns={};
+(function(){var padEl=document.getElementById("pad"),mq=window.matchMedia("(pointer:coarse) and (orientation:portrait)");
+  function fit(){if(!mq.matches){padEl.style.removeProperty("--cell");padEl.style.removeProperty("--act");return;}
+    var h=window.innerHeight;padEl.style.removeProperty("--cell");padEl.style.removeProperty("--act");
+    var r=padEl.getBoundingClientRect(),dpr=dp.getBoundingClientRect(),cur=parseFloat(getComputedStyle(padEl).getPropertyValue("--cell"))||dpr.height/3;
+    var top=dpr.top,avail=h-top-18;var cell=Math.floor((avail-6)/3);
+    if(cell<cur){cell=Math.max(36,cell);padEl.style.setProperty("--cell",cell+"px");padEl.style.setProperty("--act",Math.max(64,Math.min(116,cell*1.5))+"px");}}
+  window.addEventListener("resize",fit);window.addEventListener("orientationchange",function(){setTimeout(fit,300);});
+  setInterval(fit,700);setTimeout(fit,100);})();
 Array.prototype.forEach.call(dp.querySelectorAll("[data-k]"),function(b){dpBtns[b.getAttribute("data-k")]=b;});
 function menuStep(k){
   if(mode!=="menu")return;
