@@ -142,6 +142,61 @@ function loadXmas(){XMAS_NAMES.forEach(function(n){if(IMG["x_"+n])return;var im=
 document.getElementById("titleImg").src=ASSETS.p_travel;
 document.getElementById("face").src=ASSETS.f_smile;
 
+/* ---------- title scene ---------- */
+(function(){
+  var cv=document.getElementById("tcv"),tt=document.getElementById("title");
+  if(!cv)return;
+  var g=cv.getContext("2d"),LW=640,LH=448,S2=2,t=0,tp=[];
+  cv.width=LW*S2;cv.height=LH*S2;
+  var snow=[],stars=[],i;
+  for(i=0;i<70;i++)snow.push({x:Math.random()*LW,y:Math.random()*LH,r:0.8+Math.random()*1.8,v:0.25+Math.random()*0.7,ph:Math.random()*6.28});
+  for(i=0;i<46;i++)stars.push({x:Math.random()*LW,y:Math.random()*210,r:0.5+Math.random()*1.1,ph:Math.random()*6.28});
+  function im(n){var m=IMG[n];return(m&&m.naturalWidth)?m:null;}
+  function dh(n,cx,by,h,flip){var m=im(n);if(!m)return;var w=m.naturalWidth*h/m.naturalHeight;g.save();if(flip){g.translate(cx,0);g.scale(-1,1);g.drawImage(m,-w/2,by-h,w,h);}else g.drawImage(m,cx-w/2,by-h,w,h);g.restore();}
+  function sh(cx,by,rx){g.fillStyle="rgba(10,16,40,.35)";g.beginPath();g.ellipse(cx,by,rx,rx*0.28,0,0,6.283);g.fill();}
+  var HOT={cat:[480,330,40],inha:[190,300,60],me:[290,300,50]};
+  function frame(){
+    if(tt.style.display==="none")return;
+    t++;g.setTransform(S2,0,0,S2,0,0);g.clearRect(0,0,LW,LH);
+    /* stars */
+    stars.forEach(function(s){g.globalAlpha=0.35+0.65*(0.5+0.5*Math.sin(t/22+s.ph));g.fillStyle="#fff7da";g.fillRect(s.x,s.y,s.r,s.r);});g.globalAlpha=1;
+    /* moon */
+    g.fillStyle="rgba(255,244,205,.95)";g.beginPath();g.arc(592,200,18,0,6.283);g.fill();g.fillStyle="rgba(255,244,205,.16)";g.beginPath();g.arc(592,200,30,0,6.283);g.fill();
+    /* snowy hills */
+    g.fillStyle="#cfd9ee";g.beginPath();g.ellipse(120,372,230,56,0,0,6.283);g.fill();g.beginPath();g.ellipse(520,380,250,60,0,0,6.283);g.fill();
+    var gr=g.createLinearGradient(0,350,0,LH);gr.addColorStop(0,"#f4f7ff");gr.addColorStop(1,"#d5def2");g.fillStyle=gr;g.fillRect(0,372,LW,LH-372);
+    /* background props */
+    dh("x_tree_large",44,392,200);dh("x_tree_medium",120,384,120);dh("x_tree_large",604,396,190);dh("x_tree_small",548,386,92);
+    dh("x_lamp_post",330,376,110);
+    dh("x_snowman",402,398,84);
+    /* garland */
+    var gf=Math.floor(t/14)%3;for(i=0;i<6;i++){var gm=im("x_garland_f"+gf);if(gm){var gw=118,gh=gm.naturalHeight*gw/gm.naturalWidth;g.drawImage(gm,i*gw-4,-6,gw,gh);}}
+    /* characters */
+    var ti=Math.floor(t/12)%4+((Math.floor(t/48)%4===3)?4:0);
+    sh(290,412,26);dh("idle"+ti,290,412,118);
+    var cq=[1,4,2,3,5,9,4,10],cf=cq[Math.floor(t/18)%cq.length];
+    sh(190,414,26);dh("cheer"+cf,190,414,124);
+    sh(480,414,26);dh(((Math.floor(t/200)%2)?"cat_loaf":"cat_sit"),480,416,60,true);
+    /* gifts + sparkles */
+    dh("x_gift_sack",368,420,52);dh("x_gift_icon",404,422,40);dh("x_gift_green",98,422,40);dh("x_gift_white",134,424,32);
+    for(i=0;i<7;i++){var sp=im(i%3===0?"x_star":(i%2?"x_sparkle_a":"x_sparkle_b"));if(!sp)continue;var tw=0.5+0.5*Math.sin(t/9+i*2.1),ss=(i%3===0?14:10)*(0.6+0.6*tw);g.globalAlpha=tw;g.drawImage(sp,[250,330,150,520,70,430,600][i]-ss/2,[360,330,340,300,330,360,320][i]-ss/2,ss,ss);}g.globalAlpha=1;
+    /* heart pops */
+    for(i=tp.length-1;i>=0;i--){var p=tp[i];p.t++;if(p.t>90){tp.splice(i,1);continue;}var hm=im("x_bubble_heart");if(!hm)continue;
+      var k=p.t<10?1.35*Math.sin(p.t/10*1.5708):(p.t<18?1.35-0.35*(p.t-10)/8:1),w=36*k,h=hm.naturalHeight*w/hm.naturalWidth;
+      g.globalAlpha=p.t>72?(90-p.t)/18:1;g.drawImage(hm,p.x-w/2,p.y-p.t*0.2-h,w,h);g.globalAlpha=1;}
+    /* snow */
+    g.fillStyle="#fff";snow.forEach(function(f){f.y+=f.v;f.x+=Math.sin(t/40+f.ph)*0.35;if(f.y>LH+3){f.y=-4;f.x=Math.random()*LW;}g.globalAlpha=0.55+0.4*f.r/2.6;g.beginPath();g.arc(f.x,f.y,f.r,0,6.283);g.fill();});g.globalAlpha=1;
+    requestAnimationFrame(frame);
+  }
+  tt.addEventListener("click",function(e){
+    if(e.target.closest&&e.target.closest("button,input"))return;
+    var r=cv.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*LW,y=(e.clientY-r.top)/r.height*LH;
+    for(var k in HOT){var h=HOT[k];if(Math.hypot(x-h[0],y-h[1])<h[2]){tp.push({x:h[0],y:h[1]-(k==="cat"?20:60),t:0});return;}}
+    tp.push({x:x,y:y,t:0});
+  });
+  frame();
+})();
+
 var T=32, COLS=20, ROWS=14, AS=3, W=640, H=448, K=1;
 var cv=document.getElementById("cv"), ctx=cv.getContext("2d");
 function setupCanvas(){

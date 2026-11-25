@@ -94,3 +94,11 @@
   #title p{font-size:clamp(10px,2.4cqw,14px);line-height:1.35}
   #title input{font-size:clamp(13px,3cqw,16px);width:clamp(120px,32cqw,190px);padding:clamp(4px,1.2cqw,8px) 10px}
   #title .btn,#endbtn{font-size:clamp(13px,3cqw,16px);padding:clamp(6px,1.4cqw,10px) clamp(16px,4cqw,24px);border-width:clamp(2px,.5cqw,3px)}
+
+/* title scene */
+#title.scene{background:linear-gradient(#17224d,#4a3a7a 55%,#c9736f);justify-content:flex-start;padding-top:clamp(30px,9.5cqw,60px);overflow:hidden}
+#title.scene>*:not(#tcv){position:relative;z-index:1}
+#title.scene #titleImg{display:none}
+#title.scene h1{color:#fff3d6;text-shadow:0 2px 0 #3b2a22,0 0 14px rgba(255,214,120,.55)}
+#title.scene p{color:#f7e6d2;opacity:.95;text-shadow:0 1px 3px rgba(0,0,0,.55)}
+#tcv{position:absolute;inset:0;width:100%;height:100%;z-index:0;display:block}
