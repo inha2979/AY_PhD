@@ -1603,9 +1603,9 @@ function StarGame(){
     for(var h=0;h<3;h++)mgSpr(g,h<lives?"heart":"heart_e",34+h*36,28,28);
     mgPanel(g,200,14,240,22,"rgba(255,250,241,.92)");
     g.fillStyle="#f08a4b";g.fillRect(204,18,Math.max(0,232*Math.min(1,t/DUR)),14);
-    mgText(g,"Dodge the starfish!",320,52,13,"#fff");
+    mgText(g,"Dodge the bulgasari!",320,52,13,"#fff");
     if(t<2&&!over)mgText(g,TOUCH?"Slide on the pad to move":"Arrow keys / WASD to move",320,426,16,"#fff");
-    if(over)mgResult(g,overT,over===1?["Cleared! ⭐",lives===3?"Not a single hit. Perfect!":"You survived with "+lives+" "+(lives>1?"lives":"life")+" left.","The starfish waves goodbye."]:["Oops...","The starfish got you.","Survived "+Math.floor(t)+" / "+DUR+" seconds."],over===1?"#ffd166":"#ff9a8a");
+    if(over)mgResult(g,overT,over===1?["Cleared! ⭐",lives===3?"Not a single hit. Perfect!":"You survived with "+lives+" "+(lives>1?"lives":"life")+" left.","The bulgasari waves goodbye."]:["Oops...","The bulgasari got you.","Survived "+Math.floor(t)+" / "+DUR+" seconds."],over===1?"#ffd166":"#ff9a8a");
   };
   return G;
 }
@@ -1941,9 +1941,9 @@ function sfxSafe(n){try{sfx(n);}catch(e){}}
 function startStar(done){
   mgStart(StarGame(),function(r){
     if(r.win){var d=r.lives===3?18:12;S.stress=Math.max(0,S.stress-d);S.mgStar=(S.mgStar||0)+1;setFace("f_happy",4000);
-      say(["The starfish waves a little arm and slides back into the snow. ⭐","(Stress -"+d+(r.lives===3?" · no hits!":"")+")"],done||afterAct,"f_happy");}
+      say(["The bulgasari waves a little arm and slides back into the snow. ⭐","(Stress -"+d+(r.lives===3?" · no hits!":"")+")"],done||afterAct,"f_happy");}
     else{S.energy=Math.max(0,S.energy-8);S.stress=Math.min(99,S.stress+4);
-      say(["Bonked by a starfish. It looks a little smug. 😅","(Energy -8, Stress +4)"],done||afterAct,"f_tired");}
+      say(["Bonked by a bulgasari. It looks a little smug. 😅","(Energy -8, Stress +4)"],done||afterAct,"f_tired");}
   });
 }
 function startRhythm(done){
@@ -1974,7 +1974,7 @@ function maybeEvent(){
   if(S.evN>=2||Math.random()>0.4)return false;
   S.evN++;
   if(Math.random()<0.5){
-    openMenu("⭐ A giant starfish!",[{label:"⚔ Face it (Stress relief if you win)",fn:function(){say(["Something is rustling in the snow... 🌟","A giant starfish leaps out and starts flinging little starfish at you!"],function(){startStar(afterAct);},"f_surprise");}},{label:"Leave"}]);
+    openMenu("⭐ A giant bulgasari!",[{label:"⚔ Face it (Stress relief if you win)",fn:function(){say(["Something is rustling in the snow... 🌟","A giant bulgasari leaps out and starts flinging little bulgasari at you!"],function(){startStar(afterAct);},"f_surprise");}},{label:"Leave"}]);
   }else{
     openMenu("🎵 Music is playing!",[{label:"💃 Dance along (Energy -10, Stress relief)",fn:function(){say(["Somebody turned the music up on the village speaker. 🎶","Your feet start moving on their own!"],function(){startRhythm(afterAct);},"f_happy");}},{label:"Leave"}]);
   }
