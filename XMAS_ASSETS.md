@@ -135,3 +135,7 @@ Christmas switches already in game.js: `XMAS` (lights + music), `XSNOW` (snow), 
 | `x_gift_icon` | 91×96 |
 | `x_sparkle_a` | 28×29 |
 | `x_sparkle_b` | 27×26 |
+
+## Added in v17
+- bubble_heart: pops over In Ha when you talk to her (and over the cat when petted). bubble_exclaim replaces the megaphone emoji when a Cheer Boost is available.
+- Ending (flag XEND): banner_blank with code-drawn "Merry Christmas!" text, gift_* sprites with sparkle/star, and a final message from In Ha. Turn it off with XEND=false in the template flags.

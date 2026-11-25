@@ -86,6 +86,9 @@ var ASSETS={
  "walk_up0": "assets/walk_up0.webp",
  "walk_up1": "assets/walk_up1.webp",
  "walk_up2": "assets/walk_up2.webp",
+ "x_banner_blank": "assets/xmas/banner_blank.webp",
+ "x_bubble_exclaim": "assets/xmas/bubble_exclaim.webp",
+ "x_bubble_heart": "assets/xmas/bubble_heart.webp",
  "x_candle_f0": "assets/xmas/candle_f0.webp",
  "x_candle_f1": "assets/xmas/candle_f1.webp",
  "x_candle_f2": "assets/xmas/candle_f2.webp",
@@ -96,10 +99,17 @@ var ASSETS={
  "x_garland_f0": "assets/xmas/garland_f0.webp",
  "x_garland_f1": "assets/xmas/garland_f1.webp",
  "x_garland_f2": "assets/xmas/garland_f2.webp",
+ "x_gift_green": "assets/xmas/gift_green.webp",
+ "x_gift_icon": "assets/xmas/gift_icon.webp",
+ "x_gift_sack": "assets/xmas/gift_sack.webp",
+ "x_gift_white": "assets/xmas/gift_white.webp",
  "x_gingerbread": "assets/xmas/gingerbread.webp",
  "x_lamp_post": "assets/xmas/lamp_post.webp",
  "x_reindeer_rest": "assets/xmas/reindeer_rest.webp",
  "x_snowman": "assets/xmas/snowman.webp",
+ "x_sparkle_a": "assets/xmas/sparkle_a.webp",
+ "x_sparkle_b": "assets/xmas/sparkle_b.webp",
+ "x_star": "assets/xmas/star.webp",
  "x_tree_large": "assets/xmas/tree_large.webp",
  "x_tree_medium": "assets/xmas/tree_medium.webp",
  "x_tree_small": "assets/xmas/tree_small.webp",
@@ -178,7 +188,7 @@ var trees=[[0,5,"t_tree"],[19,5,"t_pink"],[6,6,"t_pine"],[13,6,"t_tree"],[13,12,
 var XT={c:6,r:11};
 var decor=[{n:"o_lamp",c:6,r:4,h:56},{n:"o_lamp",c:13,r:4,h:56},{n:"o_bench",c:9,r:12,h:28},{n:"o_flower",c:6,r:9,h:28}];
 /* Christmas switches: XMAS = lights + music, XSNOW = snow, XTREE = drawn tree, XTXT = Christmas wording, XART = sprite decorations */
-var XMAS=true, XMAS_NOTE="", XSNOW=false, XTREE=false, XTXT=false, XART=true;
+var XMAS=true, XMAS_NOTE="", XSNOW=false, XTREE=false, XTXT=false, XART=true, XEND=true;
 var XMAP={t_tree:["x_tree_small",52],t_pink:["x_tree_medium",56],t_pine:["x_tree_large",60],o_lamp:["x_lamp_post",58]};
 if(XART){decor.push({n:"x_snowman",c:18,r:8,h:46},{n:"x_reindeer_rest",c:15,r:12,h:40});}
 var blocked=[];
@@ -398,6 +408,34 @@ function drawScene(){
   });
 }
 var endT2=0;
+var POPS=[];
+function popB(n,x,y,sc){POPS.push({n:n,x:x,y:y,t:0,sc:sc||1});}
+function tickPops(){for(var i=POPS.length-1;i>=0;i--){POPS[i].t++;if(POPS[i].t>100)POPS.splice(i,1);}}
+function drawPops(){
+  for(var i=0;i<POPS.length;i++){
+    var p=POPS[i],im=IMG[p.n];if(!im||!im.naturalWidth)continue;
+    var k=p.t<10?1.35*Math.sin(p.t/10*1.5708):(p.t<18?1.35-0.35*(p.t-10)/8:1);
+    var a=p.t>80?(100-p.t)/20:1,rise=p.t*0.16;
+    var w=34*p.sc*k,h=im.naturalHeight*w/im.naturalWidth;
+    ctx.globalAlpha=a;ctx.drawImage(im,p.x-w/2,p.y-rise-h,w,h);ctx.globalAlpha=1;
+  }
+}
+var giftOn=false,giftT=0;
+function drawGifts(by){
+  var cx=W/2,G=[["x_gift_sack",cx-100,by,70,0],["x_gift_white",cx-58,by+6,50,10],["x_gift_icon",cx+96,by,62,5],["x_gift_green",cx+134,by+6,52,15]];
+  for(var i=0;i<G.length;i++){
+    var g=G[i],t=giftT-g[4];if(t<0)continue;
+    var k=t<12?1.3*Math.sin(t/12*1.5708):(t<22?1.3-0.3*(t-12)/10:1);
+    var im=IMG[g[0]];if(!im||!im.naturalWidth)continue;
+    var w=g[3]*k,h=im.naturalHeight*w/im.naturalWidth,sh=(t>30)?Math.sin(endT2/9+i)*1.5:0;
+    ctx.drawImage(im,g[1]-w/2,g[2]-h-Math.abs(sh),w,h);
+  }
+  for(var j=0;j<9;j++){
+    var sp=IMG[j%3===0?"x_star":(j%2?"x_sparkle_a":"x_sparkle_b")];if(!sp||!sp.naturalWidth)continue;
+    var tw=0.5+0.5*Math.sin(endT2/7+j*1.9),sx=cx-150+((j*97)%300),sy=by-110+((j*53)%90),ss=(j%3===0?16:11)*(0.6+0.6*tw);
+    ctx.globalAlpha=Math.min(1,giftT/20)*tw;ctx.drawImage(sp,sx-ss/2,sy-ss/2,ss,ss);ctx.globalAlpha=1;
+  }
+}
 var CHEER_SEQ=[1,4,2,3,5,9,4,10];
 function cheerSprite(cx,by,t,fast){
   var fr=CHEER_SEQ[Math.floor(t/(fast?10:22))%CHEER_SEQ.length];
@@ -562,6 +600,7 @@ function doNap(){
   say("A short nap on the sofa. 💤\n(Energy +25, Stress -6)"+tn(),afterTimed,"f_sleepy");
 }
 function petCat(){
+  popB("x_bubble_heart",CAT.x,CAT.y-38,0.9);
   CAT.purr=240;setFace("f_happy",4000);
   if(S.petKey===pKey()){
     S.cat+=1;
@@ -637,6 +676,7 @@ var actions={
   conf:function(){openMenu("🎤 Conference",[{label:"🎤 Present your research (Energy -35, Stress +12)",fn:doConference},{label:"Leave"}]);},
   home:function(){openMenu("🏠 Home",[{label:"😴 Sleep for the night"+(S.slot===3?"":" (Night only)"),fn:doSleep,off:S.slot!==3},{label:"💤 Take a nap (+25 energy, time passes)",fn:doNap},{label:"🍵 Have some tea ($3, Stress -10)",fn:doTea},{label:"Leave"}]);},
   cheer:function(){
+    popB("x_bubble_heart",CHEER.x,CHEER.y-66,1.2);
     if(S.cheerDay===S.day){say("In Ha: \"You've got this! I'll keep cheering for you from right here!\" 📣\n(Today's Cheer Boost is already used. A new one comes tomorrow.)",null,"cheer1");return;}
     S.cheerDay=S.day;S.boost=3;S.cheers++;S.energy=Math.min(100,S.energy+15);S.stress=Math.max(0,S.stress-8);
     setFace("f_happy",5000);burst(40);
@@ -668,7 +708,12 @@ function startEnding(){
     XTXT?"Merry Christmas, "+name+"! ❄️🎄 May the whole year ahead be as warm as this one."+(XMAS_NOTE?"\n"+XMAS_NOTE:""):null
   ];
   lines=lines.filter(Boolean);
-  say(lines,function(){mode="end";endDone=true;el.endbtn.style.display="block";},"robe_jump");
+  var fin=function(){mode="end";endDone=true;el.endbtn.style.display="block";};
+  say(lines,function(){
+    if(!XEND){fin();return;}
+    mode="end";giftOn=true;giftT=0;burst(70);
+    say(["In Ha: \"Wait, there's one more thing! 🎁\"","In Ha: \"I made this whole journey just for you.\nMerry Christmas, "+name+"! Whatever comes next, I'll keep cheering for you.\" 💌"],fin,"cheer3");
+  },"robe_jump");
 }
 function resetGame(){
   try{localStorage.removeItem("gradgame_en");}catch(e){}
@@ -759,7 +804,7 @@ function detectNear(){
 /* ---------- update / render ---------- */
 var catMoving=false;
 function update(){
-  endT2++;snowStep();
+  endT2++;snowStep();tickPops();if(giftOn)giftT++;
   if(mode==="play"){
     var dx=0,dy=0,sp=2.2;
     if(keys.left)dx-=1;if(keys.right)dx+=1;if(keys.up)dy-=1;if(keys.down)dy+=1;
@@ -798,7 +843,7 @@ function update(){
       }
     }
   }
-  if(ending){endT++;if(endT%40===0&&confetti.length<260)burst(20);}
+  if(ending){endT++;if(endT%40===0&&confetti.length<260)burst(20);if(giftOn&&endT%55===0)popB("x_bubble_heart",W/2-190,205,1.4);}
   for(var i=confetti.length-1;i>=0;i--){var c=confetti[i];c.x+=c.vx;c.y+=c.vy;c.r+=0.1;if(c.y>H+10)confetti.splice(i,1);}
 }
 function render(){
@@ -816,7 +861,7 @@ function render(){
   trees.forEach(function(t){ents.push({y:t[1]*T+T,f:function(){shadow(t[0]*T+16,t[1]*T+T-3,14);var xm=XART&&XMAP[t[2]];sprH(xm?xm[0]:t[2],t[0]*T+16,t[1]*T+T+2,xm?xm[1]:62);}});});
   if(XMAS&&XTREE)ents.push({y:XT.r*T+T,f:function(){xmasTree(XT.c*T+16,XT.r*T+T+2);}});
   decor.forEach(function(d){ents.push({y:d.r*T+T,f:function(){var xm=XART&&XMAP[d.n];sprH(xm?xm[0]:d.n,d.c*T+16,d.r*T+T,xm?xm[1]:d.h);}});});
-  if(cheerHere())ents.push({y:CHEER.y,f:function(){cheerSprite(CHEER.x,CHEER.y,CHEER.t,S.cheerDay!==S.day);if(S.cheerDay!==S.day){ctx.font="18px sans-serif";ctx.textAlign="center";ctx.fillText("📣",CHEER.x,CHEER.y-62+Math.sin(CHEER.t/10)*3);}}});
+  if(cheerHere())ents.push({y:CHEER.y,f:function(){cheerSprite(CHEER.x,CHEER.y,CHEER.t,S.cheerDay!==S.day);if(S.cheerDay!==S.day){var ex=IMG.x_bubble_exclaim;if(XART&&ex&&ex.naturalWidth){ctx.drawImage(ex,CHEER.x-12,CHEER.y-84+Math.sin(CHEER.t/10)*3,24,24*ex.naturalHeight/ex.naturalWidth);}else{ctx.font="18px sans-serif";ctx.textAlign="center";ctx.fillText("📣",CHEER.x,CHEER.y-62+Math.sin(CHEER.t/10)*3);}}}});
   ents.push({y:CAT.y,f:function(){catSprite(CAT.x,CAT.y,CAT.face,catMoving,CAT.t,CAT.pose,CAT.purr);}});
   if(!ending)ents.push({y:P.y,f:function(){playerSprite(P.x,P.y,P.dir,P.step,P.moving);}});
   ents.sort(function(a,b){return a.y-b.y;});
@@ -839,13 +884,26 @@ function render(){
     if(endDone){
       ctx.fillStyle="#3b2a22";ctx.font="bold 26px sans-serif";ctx.textAlign="center";
       ctx.strokeStyle="rgba(255,248,230,.95)";ctx.lineWidth=5;ctx.lineJoin="round";
-      ctx.strokeText("🎓 Congratulations, Future Doctor! 🎓",W/2,48);
-      ctx.fillText("🎓 Congratulations, Future Doctor! 🎓",W/2,48);
-      ctx.font="bold 16px sans-serif";
-      ctx.strokeText(name+"'s Road to the PhD",W/2,76);ctx.fillText(name+"'s Road to the PhD",W/2,76);
+      var xb=XEND&&IMG.x_banner_blank&&IMG.x_banner_blank.naturalWidth;
+      if(xb){
+        var bw=280,bh=bw*IMG.x_banner_blank.naturalHeight/IMG.x_banner_blank.naturalWidth,bb=4+bh+Math.sin(endT/24)*2;
+        sprW("x_banner_blank",W/2,bb,bw);
+        var bt="Merry Christmas!",fs=22;ctx.font="bold "+fs+"px Georgia,serif";
+        while(ctx.measureText(bt).width>bw*0.54&&fs>11){fs--;ctx.font="bold "+fs+"px Georgia,serif";}
+        ctx.fillStyle="#b3262e";ctx.textAlign="center";ctx.fillText(bt,W/2,bb-bh*0.40);
+        ctx.fillStyle="#3b2a22";ctx.font="bold 19px sans-serif";
+        ctx.strokeText("🎓 Congratulations, Future Doctor! 🎓",W/2,134);
+        ctx.fillText("🎓 Congratulations, Future Doctor! 🎓",W/2,134);
+      }else{
+        ctx.strokeText("🎓 Congratulations, Future Doctor! 🎓",W/2,48);
+        ctx.fillText("🎓 Congratulations, Future Doctor! 🎓",W/2,48);
+        ctx.font="bold 16px sans-serif";
+        ctx.strokeText(name+"'s Road to the PhD",W/2,76);ctx.fillText(name+"'s Road to the PhD",W/2,76);
+      }
       if(XMAS&&XTXT){ctx.fillStyle="#c0392b";ctx.font="bold 18px sans-serif";ctx.strokeText("🎄 Merry Christmas! 🎄",W/2,104);ctx.fillText("🎄 Merry Christmas! 🎄",W/2,104);}
     }
     var ph=Math.floor(endT/100)%3, cx=W/2, by=398;
+    if(giftOn)drawGifts(by+6);
     shadow(cx,by-2,62);
     if(ph===0)spr("robe_stand",cx,by,1.35);
     else if(ph===1)spr("robe_jump",cx,by-Math.abs(Math.sin(endT/6))*22-6,1.35);
@@ -857,6 +915,7 @@ function render(){
     spr(cat,cx+175,by,1.25,true);
   }
   if(scene)drawScene();
+  drawPops();
   if(XMAS&&XSNOW&&!scene)drawSnow();
   confetti.forEach(function(c){ctx.save();ctx.translate(c.x,c.y);ctx.rotate(c.r);ctx.fillStyle=c.c;ctx.fillRect(-c.s/2,-c.s/2,c.s,c.s*1.6);ctx.restore();});
 }
