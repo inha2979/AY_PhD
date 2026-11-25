@@ -692,9 +692,9 @@ function updateHUD(){
   var tc=Math.min(3,S.slot);
   el.dayTxt.innerHTML=name+" · Day "+S.day+'<span class="tod">'+PH.map(function(p,i){return '<i class="'+(i===tc?"on":i<tc?"past":"")+'">'+UI(i<2?"sun":"moon",p.e)+'</i>';}).join("")+'</span> '+PH[tc].n;
   el.rank.textContent=rank();
-  el.en.style.width=S.energy+"%";el.st.style.width=S.stress+"%";
+  el.en.style.width=S.energy+"%";el.st.style.width=S.stress+"%";el.en.parentNode.classList.toggle("lowf",S.energy<25);
   el.en.className=S.energy<25?"lo":(S.energy<50?"mid":"");
-  el.st.className=S.stress>=70?"lo":(S.stress>=40?"mid":"");
+  el.st.className=S.stress>=70?"lo":(S.stress>=40?"mid":"");el.en.classList.toggle("z",S.energy<=2);el.st.classList.toggle("z",S.stress<=2);
   document.getElementById('lbEn').innerHTML=UI('bolt','⚡')+' Energy';document.getElementById('lbSt').innerHTML=UI('heart','😵')+' Stress';el.enTxt.textContent=S.energy+"/100";el.stTxt.textContent=S.stress+"/100";
   el.face.src=ASSETS[currentFace()];
   el.chips.innerHTML=

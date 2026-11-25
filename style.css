@@ -145,14 +145,18 @@
   body.skin #hud .lab{margin-bottom:0;font-weight:700}
   body.skin .ic2{height:1.35em;width:auto;vertical-align:-.3em;image-rendering:auto}
   body.skin #face{border:0;background:none}
-  body.skin .bar{position:relative;height:24px;background:url("assets/ui/bar_en_l.png") left center/auto 100% no-repeat,url("assets/ui/bar_en_r.png") right center/auto 100% no-repeat,url("assets/ui/bar_en_m.png") center/auto 100% repeat-x;border-radius:0;overflow:visible;padding:0 14px 0 32px}
-  body.skin .bar.st{background:url("assets/ui/bar_st_l.png") left center/auto 100% no-repeat,url("assets/ui/bar_st_r.png") right center/auto 100% no-repeat,url("assets/ui/bar_st_m.png") center/auto 100% repeat-x;padding-left:33px}
-  body.skin .bar>i{position:relative;top:5.5px;height:13px;min-width:0;border-radius:3px;background:url("assets/ui/fill_green.png") center/100% 100% no-repeat;transition:width .3s}
-  body.skin #en.mid,body.skin #st.mid{background:url("assets/ui/fill_orange.png") center/100% 100% no-repeat}
-  body.skin #en.lo,body.skin #st.lo{background:url("assets/ui/fill_red.png") center/100% 100% no-repeat}
-  body.skin #st{background:url("assets/ui/fill_green.png") center/100% 100% no-repeat}
-  body.skin #st.mid{background:url("assets/ui/fill_orange.png") center/100% 100% no-repeat}
-  body.skin #st.lo{background:url("assets/ui/fill_red.png") center/100% 100% no-repeat}
+  body.skin .bar{position:relative;height:33px;margin-top:-2px;background:url("assets/ui/gb_en_l.png") left bottom/auto 100% no-repeat,url("assets/ui/gb_en_r.png") right bottom/auto 100% no-repeat,url("assets/ui/gb_en_m.png") center bottom/100% 100% no-repeat;border-radius:0;overflow:visible;padding:0 7px 0 30px;filter:drop-shadow(0 1px 0 rgba(59,42,34,.15))}
+  body.skin .bar.st{background:url("assets/ui/gb_st_l.png") left bottom/auto 100% no-repeat,url("assets/ui/gb_st_r.png") right bottom/auto 100% no-repeat,url("assets/ui/gb_st_m.png") center bottom/100% 100% no-repeat}
+  body.skin .bar.lowf{background:url("assets/ui/gb_lo_l.png") left bottom/auto 100% no-repeat,url("assets/ui/gb_lo_r.png") right bottom/auto 100% no-repeat,url("assets/ui/gb_lo_m.png") center bottom/100% 100% no-repeat;padding-left:34px;animation:lowfr .8s ease-in-out infinite alternate}
+  @keyframes lowfr{from{filter:none}to{filter:brightness(1.12) drop-shadow(0 0 3px rgba(220,70,60,.6))}}
+  body.skin .bar>i{position:relative;top:15px;height:12px;min-width:0;border-radius:0;background:url("assets/ui/gf_green_l.png") left/auto 100% no-repeat,url("assets/ui/gf_green_r.png") right/auto 100% no-repeat,url("assets/ui/gf_green_m.png") center/auto 100% repeat-x;transition:width .3s}
+  body.skin .bar>i.z{visibility:hidden}
+  body.skin #en{background:url("assets/ui/gf_green_l.png") left/auto 100% no-repeat,url("assets/ui/gf_green_r.png") right/auto 100% no-repeat,url("assets/ui/gf_green_m.png") center/auto 100% repeat-x}
+  body.skin #en.mid,body.skin #st.mid{background:url("assets/ui/gf_orange_l.png") left/auto 100% no-repeat,url("assets/ui/gf_orange_r.png") right/auto 100% no-repeat,url("assets/ui/gf_orange_m.png") center/auto 100% repeat-x}
+  body.skin #en.lo,body.skin #st.lo{background:url("assets/ui/gf_red_l.png") left/auto 100% no-repeat,url("assets/ui/gf_red_r.png") right/auto 100% no-repeat,url("assets/ui/gf_red_m.png") center/auto 100% repeat-x}
+  body.skin #st{background:url("assets/ui/gf_green_l.png") left/auto 100% no-repeat,url("assets/ui/gf_green_r.png") right/auto 100% no-repeat,url("assets/ui/gf_green_m.png") center/auto 100% repeat-x}
+  body.skin #st.mid{background:url("assets/ui/gf_orange_l.png") left/auto 100% no-repeat,url("assets/ui/gf_orange_r.png") right/auto 100% no-repeat,url("assets/ui/gf_orange_m.png") center/auto 100% repeat-x}
+  body.skin #st.lo{background:url("assets/ui/gf_red_l.png") left/auto 100% no-repeat,url("assets/ui/gf_red_r.png") right/auto 100% no-repeat,url("assets/ui/gf_red_m.png") center/auto 100% repeat-x}
   body.skin .chip{background:none;border:0 solid transparent;border-width:0 13px;border-image:url("assets/ui/chip_holly.png") 0 22 fill/0 13px stretch;border-radius:0;padding:3px 2px;font-weight:700;color:#4a3426}
   body.skin .chip.pl{border-image:url("assets/ui/chip_plaid.png") 0 22 fill/0 13px stretch}
   body.skin .chip.flash{animation:flash2 .6s ease-out}
