@@ -116,6 +116,12 @@ var ASSETS={
  "mp_m_snowpile": "assets/map/m_snowpile.webp",
  "mp_m_steps": "assets/map/m_steps.webp",
  "mp_m_stump": "assets/map/m_stump.webp",
+ "mp_s_bakery": "assets/map/s_bakery.webp",
+ "mp_s_cafe": "assets/map/s_cafe.webp",
+ "mp_s_garden": "assets/map/s_garden.webp",
+ "mp_s_hall": "assets/map/s_hall.webp",
+ "mp_s_home": "assets/map/s_home.webp",
+ "mp_s_lib": "assets/map/s_lib.webp",
  "o_bench": "assets/o_bench.webp",
  "o_flower": "assets/o_flower.webp",
  "o_lamp": "assets/o_lamp.webp",
@@ -460,7 +466,9 @@ function drawGarden(){
   ctx.fillStyle="#3b2a22";ctx.font="bold 12px sans-serif";ctx.textAlign="center";
   ctx.fillText("🌸 Cat Garden",garden.x+garden.w/2,garden.y-4);
 }
+function signAt(n,cx,top,w){var im=IMG[n];if(!MAPART||!im||!im.naturalWidth)return false;var h=w*im.naturalHeight/im.naturalWidth;ctx.drawImage(im,cx-w/2,top,w,h);return true;}
 function drawGardenLabel(){
+  if(signAt("mp_s_garden",garden.x+garden.w/2,garden.y-34,100))return;
   ctx.font="bold 12px sans-serif";ctx.textAlign="center";var tx="🌸 Cat Garden",w=ctx.measureText(tx).width+14;
   ctx.fillStyle="rgba(255,250,241,.9)";ctx.fillRect(garden.x+garden.w/2-w/2,garden.y-17,w,16);
   ctx.fillStyle="#3b2a22";ctx.fillText(tx,garden.x+garden.w/2,garden.y-5);
@@ -479,9 +487,10 @@ function drawBuilding(b){
     if(XMAS&&b.id!=="hall")lightString(cx-dw*0.40,cx+dw*0.40,by-dh*0.42,6,13);
     if(b.id==="hall"&&S.know<100){ctx.font="22px sans-serif";ctx.textAlign="center";ctx.fillText("🔒",cx,by-14);}
   } else R(x,y,w,h,"#ccc");
+  if(!signAt("mp_s_"+b.id,x+w/2,y+h+4,108)){
   ctx.font="bold 13px sans-serif";ctx.textAlign="center";
   ctx.fillStyle="rgba(255,250,241,.92)";ctx.fillRect(x+w/2-50,y+h+8,100,16);
-  ctx.fillStyle="#3b2a22";ctx.fillText(b.label,x+w/2,y+h+20);
+  ctx.fillStyle="#3b2a22";ctx.fillText(b.label,x+w/2,y+h+20);}
 }
 
 /* ---- character from sprite sheet ---- */
