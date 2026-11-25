@@ -1,0 +1,485 @@
+[
+ {
+  "name": "candle_f0",
+  "file": "assets/xmas/candle_f0.webp",
+  "w": 91,
+  "h": 99,
+  "category": "animated (3 frames, loop f0\u2192f1\u2192f2)"
+ },
+ {
+  "name": "candle_f1",
+  "file": "assets/xmas/candle_f1.webp",
+  "w": 93,
+  "h": 95,
+  "category": "animated (3 frames, loop f0\u2192f1\u2192f2)"
+ },
+ {
+  "name": "candle_f2",
+  "file": "assets/xmas/candle_f2.webp",
+  "w": 90,
+  "h": 95,
+  "category": "animated (3 frames, loop f0\u2192f1\u2192f2)"
+ },
+ {
+  "name": "snowglobe_f0",
+  "file": "assets/xmas/snowglobe_f0.webp",
+  "w": 97,
+  "h": 112,
+  "category": "animated (3 frames, loop f0\u2192f1\u2192f2)"
+ },
+ {
+  "name": "snowglobe_f1",
+  "file": "assets/xmas/snowglobe_f1.webp",
+  "w": 97,
+  "h": 112,
+  "category": "animated (3 frames, loop f0\u2192f1\u2192f2)"
+ },
+ {
+  "name": "snowglobe_f2",
+  "file": "assets/xmas/snowglobe_f2.webp",
+  "w": 98,
+  "h": 112,
+  "category": "animated (3 frames, loop f0\u2192f1\u2192f2)"
+ },
+ {
+  "name": "garland_f0",
+  "file": "assets/xmas/garland_f0.webp",
+  "w": 109,
+  "h": 50,
+  "category": "animated (3 frames, loop f0\u2192f1\u2192f2)"
+ },
+ {
+  "name": "garland_f1",
+  "file": "assets/xmas/garland_f1.webp",
+  "w": 107,
+  "h": 49,
+  "category": "animated (3 frames, loop f0\u2192f1\u2192f2)"
+ },
+ {
+  "name": "garland_f2",
+  "file": "assets/xmas/garland_f2.webp",
+  "w": 111,
+  "h": 49,
+  "category": "animated (3 frames, loop f0\u2192f1\u2192f2)"
+ },
+ {
+  "name": "fireplace_mini_f0",
+  "file": "assets/xmas/fireplace_mini_f0.webp",
+  "w": 119,
+  "h": 108,
+  "category": "animated (3 frames, loop f0\u2192f1\u2192f2)"
+ },
+ {
+  "name": "fireplace_mini_f1",
+  "file": "assets/xmas/fireplace_mini_f1.webp",
+  "w": 114,
+  "h": 102,
+  "category": "animated (3 frames, loop f0\u2192f1\u2192f2)"
+ },
+ {
+  "name": "fireplace_mini_f2",
+  "file": "assets/xmas/fireplace_mini_f2.webp",
+  "w": 116,
+  "h": 107,
+  "category": "animated (3 frames, loop f0\u2192f1\u2192f2)"
+ },
+ {
+  "name": "tree_small",
+  "file": "assets/xmas/tree_small.webp",
+  "w": 130,
+  "h": 193,
+  "category": "trees & large outdoor decor"
+ },
+ {
+  "name": "tree_medium",
+  "file": "assets/xmas/tree_medium.webp",
+  "w": 138,
+  "h": 239,
+  "category": "trees & large outdoor decor"
+ },
+ {
+  "name": "tree_large",
+  "file": "assets/xmas/tree_large.webp",
+  "w": 174,
+  "h": 268,
+  "category": "trees & large outdoor decor"
+ },
+ {
+  "name": "wreath_stand",
+  "file": "assets/xmas/wreath_stand.webp",
+  "w": 144,
+  "h": 209,
+  "category": "trees & large outdoor decor"
+ },
+ {
+  "name": "snowman",
+  "file": "assets/xmas/snowman.webp",
+  "w": 118,
+  "h": 177,
+  "category": "trees & large outdoor decor"
+ },
+ {
+  "name": "reindeer_rest",
+  "file": "assets/xmas/reindeer_rest.webp",
+  "w": 180,
+  "h": 162,
+  "category": "trees & large outdoor decor"
+ },
+ {
+  "name": "reindeer_lights",
+  "file": "assets/xmas/reindeer_lights.webp",
+  "w": 127,
+  "h": 188,
+  "category": "trees & large outdoor decor"
+ },
+ {
+  "name": "fence_lights",
+  "file": "assets/xmas/fence_lights.webp",
+  "w": 162,
+  "h": 128,
+  "category": "trees & large outdoor decor"
+ },
+ {
+  "name": "holly_snow_bush",
+  "file": "assets/xmas/holly_snow_bush.webp",
+  "w": 141,
+  "h": 121,
+  "category": "trees & large outdoor decor"
+ },
+ {
+  "name": "lamp_post",
+  "file": "assets/xmas/lamp_post.webp",
+  "w": 67,
+  "h": 182,
+  "category": "trees & large outdoor decor"
+ },
+ {
+  "name": "snow_pile",
+  "file": "assets/xmas/snow_pile.webp",
+  "w": 92,
+  "h": 52,
+  "category": "trees & large outdoor decor"
+ },
+ {
+  "name": "window_night",
+  "file": "assets/xmas/window_night.webp",
+  "w": 185,
+  "h": 163,
+  "category": "windows"
+ },
+ {
+  "name": "window_warm",
+  "file": "assets/xmas/window_warm.webp",
+  "w": 176,
+  "h": 160,
+  "category": "windows"
+ },
+ {
+  "name": "armchair",
+  "file": "assets/xmas/armchair.webp",
+  "w": 173,
+  "h": 185,
+  "category": "furniture & interior"
+ },
+ {
+  "name": "round_table_mug",
+  "file": "assets/xmas/round_table_mug.webp",
+  "w": 120,
+  "h": 187,
+  "category": "furniture & interior"
+ },
+ {
+  "name": "bookshelf",
+  "file": "assets/xmas/bookshelf.webp",
+  "w": 161,
+  "h": 177,
+  "category": "furniture & interior"
+ },
+ {
+  "name": "fireplace_big",
+  "file": "assets/xmas/fireplace_big.webp",
+  "w": 244,
+  "h": 204,
+  "category": "furniture & interior"
+ },
+ {
+  "name": "sofa",
+  "file": "assets/xmas/sofa.webp",
+  "w": 188,
+  "h": 139,
+  "category": "furniture & interior"
+ },
+ {
+  "name": "bed",
+  "file": "assets/xmas/bed.webp",
+  "w": 113,
+  "h": 159,
+  "category": "furniture & interior"
+ },
+ {
+  "name": "nightstand_lamp",
+  "file": "assets/xmas/nightstand_lamp.webp",
+  "w": 50,
+  "h": 112,
+  "category": "furniture & interior"
+ },
+ {
+  "name": "floor_lamp",
+  "file": "assets/xmas/floor_lamp.webp",
+  "w": 82,
+  "h": 197,
+  "category": "furniture & interior"
+ },
+ {
+  "name": "dining_set",
+  "file": "assets/xmas/dining_set.webp",
+  "w": 263,
+  "h": 158,
+  "category": "furniture & interior"
+ },
+ {
+  "name": "rug",
+  "file": "assets/xmas/rug.webp",
+  "w": 135,
+  "h": 122,
+  "category": "furniture & interior"
+ },
+ {
+  "name": "gift_green",
+  "file": "assets/xmas/gift_green.webp",
+  "w": 100,
+  "h": 110,
+  "category": "props & items"
+ },
+ {
+  "name": "gift_white",
+  "file": "assets/xmas/gift_white.webp",
+  "w": 90,
+  "h": 99,
+  "category": "props & items"
+ },
+ {
+  "name": "gift_sack",
+  "file": "assets/xmas/gift_sack.webp",
+  "w": 100,
+  "h": 114,
+  "category": "props & items"
+ },
+ {
+  "name": "candy_cane",
+  "file": "assets/xmas/candy_cane.webp",
+  "w": 65,
+  "h": 101,
+  "category": "props & items"
+ },
+ {
+  "name": "gingerbread",
+  "file": "assets/xmas/gingerbread.webp",
+  "w": 81,
+  "h": 96,
+  "category": "props & items"
+ },
+ {
+  "name": "tree_cookie",
+  "file": "assets/xmas/tree_cookie.webp",
+  "w": 78,
+  "h": 97,
+  "category": "props & items"
+ },
+ {
+  "name": "star",
+  "file": "assets/xmas/star.webp",
+  "w": 81,
+  "h": 77,
+  "category": "props & items"
+ },
+ {
+  "name": "ornament",
+  "file": "assets/xmas/ornament.webp",
+  "w": 57,
+  "h": 77,
+  "category": "props & items"
+ },
+ {
+  "name": "snowflake",
+  "file": "assets/xmas/snowflake.webp",
+  "w": 79,
+  "h": 86,
+  "category": "props & items"
+ },
+ {
+  "name": "lantern_dim",
+  "file": "assets/xmas/lantern_dim.webp",
+  "w": 54,
+  "h": 98,
+  "category": "props & items"
+ },
+ {
+  "name": "lantern_lit",
+  "file": "assets/xmas/lantern_lit.webp",
+  "w": 54,
+  "h": 96,
+  "category": "props & items"
+ },
+ {
+  "name": "poinsettia",
+  "file": "assets/xmas/poinsettia.webp",
+  "w": 118,
+  "h": 118,
+  "category": "props & items"
+ },
+ {
+  "name": "cocoa_mug",
+  "file": "assets/xmas/cocoa_mug.webp",
+  "w": 78,
+  "h": 117,
+  "category": "props & items"
+ },
+ {
+  "name": "cake_choco",
+  "file": "assets/xmas/cake_choco.webp",
+  "w": 119,
+  "h": 116,
+  "category": "props & items"
+ },
+ {
+  "name": "cake_berry",
+  "file": "assets/xmas/cake_berry.webp",
+  "w": 113,
+  "h": 107,
+  "category": "props & items"
+ },
+ {
+  "name": "yule_log",
+  "file": "assets/xmas/yule_log.webp",
+  "w": 134,
+  "h": 107,
+  "category": "props & items"
+ },
+ {
+  "name": "letter",
+  "file": "assets/xmas/letter.webp",
+  "w": 112,
+  "h": 89,
+  "category": "props & items"
+ },
+ {
+  "name": "card",
+  "file": "assets/xmas/card.webp",
+  "w": 91,
+  "h": 113,
+  "category": "props & items"
+ },
+ {
+  "name": "book_stack",
+  "file": "assets/xmas/book_stack.webp",
+  "w": 108,
+  "h": 121,
+  "category": "props & items"
+ },
+ {
+  "name": "tile_wood",
+  "file": "assets/xmas/tile_wood.webp",
+  "w": 80,
+  "h": 85,
+  "category": "floor tiles"
+ },
+ {
+  "name": "tile_parquet",
+  "file": "assets/xmas/tile_parquet.webp",
+  "w": 81,
+  "h": 85,
+  "category": "floor tiles"
+ },
+ {
+  "name": "tile_red",
+  "file": "assets/xmas/tile_red.webp",
+  "w": 80,
+  "h": 85,
+  "category": "floor tiles"
+ },
+ {
+  "name": "tile_plaid",
+  "file": "assets/xmas/tile_plaid.webp",
+  "w": 77,
+  "h": 85,
+  "category": "floor tiles"
+ },
+ {
+  "name": "tile_snow_cream",
+  "file": "assets/xmas/tile_snow_cream.webp",
+  "w": 78,
+  "h": 85,
+  "category": "floor tiles"
+ },
+ {
+  "name": "tile_snow_blue",
+  "file": "assets/xmas/tile_snow_blue.webp",
+  "w": 75,
+  "h": 85,
+  "category": "floor tiles"
+ },
+ {
+  "name": "banner_tree",
+  "file": "assets/xmas/banner_tree.webp",
+  "w": 69,
+  "h": 112,
+  "category": "banners"
+ },
+ {
+  "name": "banner_snowflake",
+  "file": "assets/xmas/banner_snowflake.webp",
+  "w": 68,
+  "h": 112,
+  "category": "banners"
+ },
+ {
+  "name": "banner_reindeer",
+  "file": "assets/xmas/banner_reindeer.webp",
+  "w": 68,
+  "h": 112,
+  "category": "banners"
+ },
+ {
+  "name": "banner_blank",
+  "file": "assets/xmas/banner_blank.webp",
+  "w": 264,
+  "h": 103,
+  "category": "banners"
+ },
+ {
+  "name": "bubble_exclaim",
+  "file": "assets/xmas/bubble_exclaim.webp",
+  "w": 78,
+  "h": 74,
+  "category": "ui / fx"
+ },
+ {
+  "name": "bubble_heart",
+  "file": "assets/xmas/bubble_heart.webp",
+  "w": 78,
+  "h": 75,
+  "category": "ui / fx"
+ },
+ {
+  "name": "gift_icon",
+  "file": "assets/xmas/gift_icon.webp",
+  "w": 91,
+  "h": 96,
+  "category": "ui / fx"
+ },
+ {
+  "name": "sparkle_a",
+  "file": "assets/xmas/sparkle_a.webp",
+  "w": 28,
+  "h": 29,
+  "category": "ui / fx"
+ },
+ {
+  "name": "sparkle_b",
+  "file": "assets/xmas/sparkle_b.webp",
+  "w": 27,
+  "h": 26,
+  "category": "ui / fx"
+ }
+]
