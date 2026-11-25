@@ -200,7 +200,7 @@ var blocked=[];
   if(XTREE)blocked[XT.r][XT.c]=true;
 })();
 function isBlocked(px,py){
-  if(isConfDay()&&px>134&&px<250&&py>392&&py<440)return true;
+  if(isConfDay()&&px>134&&px<254&&py>372&&py<428)return true;
   var c=Math.floor(px/T), r=Math.floor(py/T);
   if(c<0||r<0||c>=COLS||r>=ROWS)return true;
   return blocked[r][c];
@@ -854,7 +854,7 @@ function render(){
   buildings.forEach(drawBuilding);
   if(isConfDay()){
     var cb=IMG.b_conf;
-    if(cb&&cb.naturalWidth){var cw=132,chh=cw*cb.naturalHeight/cb.naturalWidth;shadow(194,436,52);ctx.drawImage(cb,128,438-chh,cw,chh);}
+    if(cb&&cb.naturalWidth){var cw=120,chh=cw*cb.naturalHeight/cb.naturalWidth;shadow(194,424,48);ctx.drawImage(cb,134,426-chh,cw,chh);}
     ctx.font="bold 13px sans-serif";ctx.textAlign="center";ctx.fillStyle="rgba(255,250,241,.92)";ctx.fillRect(194-52,428,104,16);ctx.fillStyle="#3b2a22";ctx.fillText("🎤 Conference",194,440);
   }
   var ents=[];
