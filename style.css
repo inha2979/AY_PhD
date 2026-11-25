@@ -139,3 +139,42 @@
   .dlt{position:absolute;pointer-events:none;font-weight:800;font-size:13px;transform:translate(-50%,0);animation:dlt 1.1s ease-out forwards;text-shadow:0 1px 0 #fff;z-index:5}
   .dlt.g{color:#2d7a2b}.dlt.b{color:#c0392b}
   @keyframes dlt{0%{opacity:0;margin-top:2px}15%{opacity:1}100%{opacity:0;margin-top:-20px}}
+  /* ---- Pixel UI skin (body.skin) ---- */
+  body.skin{background:#efe4cf url("assets/ui/tile_snow.png") 0 0/84px auto}
+  body.skin #hud{background:none;border:14px solid transparent;border-image:url("assets/ui/frame_wood.png") 38 fill/14px stretch;border-radius:0;padding:0 4px 2px;margin-bottom:6px;gap:3px 12px}
+  body.skin #hud .lab{margin-bottom:0;font-weight:700}
+  body.skin .ic2{height:1.35em;width:auto;vertical-align:-.3em;image-rendering:auto}
+  body.skin #face{border:0;background:none}
+  body.skin .bar{position:relative;height:24px;background:url("assets/ui/bar_en_l.png") left center/auto 100% no-repeat,url("assets/ui/bar_en_r.png") right center/auto 100% no-repeat,url("assets/ui/bar_en_m.png") center/auto 100% repeat-x;border-radius:0;overflow:visible;padding:0 14px 0 32px}
+  body.skin .bar.st{background:url("assets/ui/bar_st_l.png") left center/auto 100% no-repeat,url("assets/ui/bar_st_r.png") right center/auto 100% no-repeat,url("assets/ui/bar_st_m.png") center/auto 100% repeat-x;padding-left:33px}
+  body.skin .bar>i{position:relative;top:5.5px;height:13px;min-width:0;border-radius:3px;background:url("assets/ui/fill_green.png") center/100% 100% no-repeat;transition:width .3s}
+  body.skin #en.mid,body.skin #st.mid{background:url("assets/ui/fill_orange.png") center/100% 100% no-repeat}
+  body.skin #en.lo,body.skin #st.lo{background:url("assets/ui/fill_red.png") center/100% 100% no-repeat}
+  body.skin #st{background:url("assets/ui/fill_green.png") center/100% 100% no-repeat}
+  body.skin #st.mid{background:url("assets/ui/fill_orange.png") center/100% 100% no-repeat}
+  body.skin #st.lo{background:url("assets/ui/fill_red.png") center/100% 100% no-repeat}
+  body.skin .chip{background:none;border:0 solid transparent;border-width:0 13px;border-image:url("assets/ui/chip_holly.png") 0 22 fill/0 13px stretch;border-radius:0;padding:3px 2px;font-weight:700;color:#4a3426}
+  body.skin .chip.pl{border-image:url("assets/ui/chip_plaid.png") 0 22 fill/0 13px stretch}
+  body.skin .chip.flash{animation:flash2 .6s ease-out}
+  @keyframes flash2{0%{transform:scale(1.18);filter:brightness(1.25)}100%{transform:scale(1);filter:none}}
+  body.skin #dialog{background:none;border:16px solid transparent;border-image:url("assets/ui/frame_green.png") 39 fill/16px stretch;border-radius:0;box-shadow:none;padding:2px 6px}
+  body.skin #menu{background:none;border:16px solid transparent;border-image:url("assets/ui/frame_cream.png") 33 fill/16px stretch;border-radius:0;box-shadow:none;padding:2px 4px}
+  body.skin #dialog .nm{background:none;border:0 solid transparent;border-width:0 12px;border-image:url("assets/ui/name_b.png") 0 24 fill/0 12px stretch;color:#4a2c20;border-radius:0;padding:1px 0}
+  body.skin #dialog .nm.ih{border-image:url("assets/ui/name_a.png") 0 24 fill/0 12px stretch;color:#b13a4d}
+  body.skin #menu h3{padding-bottom:12px;background:url("assets/ui/divider.png") center bottom/auto 12px no-repeat}
+  body.skin #menu button.card{background:rgba(255,255,255,.55);border:2px solid #dcc7a2}
+  body.skin #menu button.sel{background:#fff1d6;border-color:#b5683f}
+  body.skin #menu button.sel::before{content:"";width:14px;height:18px;margin-top:-9px;left:-18px;background:url("assets/ui/cursor.png") center/contain no-repeat;font-size:0}
+  body.skin #menu button.card .ci img.ic2{height:1.4em}
+  body.skin #pad .dp button{border:0;background:center/contain no-repeat;color:transparent;font-size:0;border-radius:0;transition:none}
+  body.skin #pad .dp button[data-k=up]{background-image:url("assets/ui/pad_up.png")}
+  body.skin #pad .dp button[data-k=down]{background-image:url("assets/ui/pad_down.png")}
+  body.skin #pad .dp button[data-k=left]{background-image:url("assets/ui/pad_left.png")}
+  body.skin #pad .dp button[data-k=right]{background-image:url("assets/ui/pad_right.png")}
+  body.skin #pad .dp button.on{transform:none;border:0}
+  body.skin #pad .dp button.on[data-k=up]{background-image:url("assets/ui/pad_up_on.png")}
+  body.skin #pad .dp button.on[data-k=down]{background-image:url("assets/ui/pad_down_on.png")}
+  body.skin #pad .dp button.on[data-k=left]{background-image:url("assets/ui/pad_left_on.png")}
+  body.skin #pad .dp button.on[data-k=right]{background-image:url("assets/ui/pad_right_on.png")}
+  body.skin #pad .act{border:0;border-radius:0;background:url("assets/ui/act.png") center/contain no-repeat;color:#fff8ea;text-shadow:0 1px 0 #4a2c20,0 -1px 0 #4a2c20,1px 0 0 #4a2c20,-1px 0 0 #4a2c20}
+  body.skin #pad .act:active,body.skin #pad .act.on{background-image:url("assets/ui/act_on.png");transform:none;filter:none}

@@ -77,6 +77,15 @@ var ASSETS={
  "t_tree": "assets/t_tree.webp",
  "tile_dirt": "assets/tile_dirt.webp",
  "tile_stone": "assets/tile_stone.webp",
+ "u_bolt": "assets/ui/i_bolt.png",
+ "u_bowl": "assets/ui/i_bowl.png",
+ "u_brain": "assets/ui/i_brain.png",
+ "u_cat": "assets/ui/i_cat.png",
+ "u_coins": "assets/ui/i_coins.png",
+ "u_cookie": "assets/ui/i_cookie.png",
+ "u_heart": "assets/ui/i_heart.png",
+ "u_moon": "assets/ui/i_moon.png",
+ "u_sun": "assets/ui/i_sun.png",
  "walk_down0": "assets/walk_down0.webp",
  "walk_down1": "assets/walk_down1.webp",
  "walk_down2": "assets/walk_down2.webp",
@@ -506,6 +515,9 @@ function burst(n){
 }
 
 /* ---------- ui ---------- */
+var SKIN=true;
+function UI(n,fb){return (SKIN&&ASSETS["u_"+n])?'<img class="ic2" src="'+ASSETS["u_"+n]+'" alt="">':fb;}
+if(SKIN&&ASSETS.u_bolt)document.body.classList.add("skin");
 function ICON(n,fb){return (XART&&ASSETS["x_"+n])?'<img class="ic" src="'+ASSETS["x_"+n]+'" alt="">':fb;}
 var el={dayTxt:null,rank:null,en:null,st:null,enTxt:null,stTxt:null,chips:null,hint:null,dialog:null,menu:null,title:null,endbtn:null,face:null};
 Object.keys(el).forEach(function(k){el[k]=document.getElementById(k);});
@@ -522,22 +534,22 @@ function currentFace(){
 function updateHUD(){
   if(!S)return;
   var tc=Math.min(3,S.slot);
-  el.dayTxt.innerHTML=name+" · Day "+S.day+'<span class="tod">'+PH.map(function(p,i){return '<i class="'+(i===tc?"on":i<tc?"past":"")+'">'+p.e+'</i>';}).join("")+'</span> '+PH[tc].n;
+  el.dayTxt.innerHTML=name+" · Day "+S.day+'<span class="tod">'+PH.map(function(p,i){return '<i class="'+(i===tc?"on":i<tc?"past":"")+'">'+UI(i<2?"sun":"moon",p.e)+'</i>';}).join("")+'</span> '+PH[tc].n;
   el.rank.textContent=rank();
   el.en.style.width=S.energy+"%";el.st.style.width=S.stress+"%";
   el.en.className=S.energy<25?"lo":(S.energy<50?"mid":"");
   el.st.className=S.stress>=70?"lo":(S.stress>=40?"mid":"");
-  el.enTxt.textContent=S.energy+"/100";el.stTxt.textContent=S.stress+"/100";
+  document.getElementById('lbEn').innerHTML=UI('bolt','⚡')+' Energy';document.getElementById('lbSt').innerHTML=UI('heart','😵')+' Stress';el.enTxt.textContent=S.energy+"/100";el.stTxt.textContent=S.stress+"/100";
   el.face.src=ASSETS[currentFace()];
   el.chips.innerHTML=
-    '<span class="chip" data-k="know">📖 Research '+S.know+'/100</span>'+
-    '<span class="chip" data-k="money">💰 $'+S.money+'</span>'+
-    '<span class="chip" data-k="bake">🥐 Baking Lv.'+(1+Math.floor(S.bake/3))+'</span>'+
-    '<span class="chip" data-k="cookies">'+ICON("gingerbread","🍪")+' Cookies '+S.cookies+'</span>'+
-    '<span class="chip" data-k="cat">🐱 Cat bond '+S.cat+'</span>'+
-    (S.boost>0?'<span class="chip" style="background:#ffd9d2;font-weight:700">📣 Cheer Boost ×1.5 ('+S.boost+' left)</span>':'')+
-    (S.hw>0?'<span class="chip" style="background:#e3dcf7;font-weight:700">📝 Homework: '+S.hw+' study left</span>':'')+
-    (isConfDay()?'<span class="chip" style="background:#d8ecff;font-weight:700">🎤 Conference today!</span>':'');
+    '<span class="chip" data-k="know">'+UI("brain","📖")+' Research '+S.know+'/100</span>'+
+    '<span class="chip" data-k="money">'+UI("coins","💰")+' $'+S.money+'</span>'+
+    '<span class="chip" data-k="bake">'+UI("bowl","🥐")+' Baking Lv.'+(1+Math.floor(S.bake/3))+'</span>'+
+    '<span class="chip" data-k="cookies">'+UI("cookie",ICON("gingerbread","🍪"))+' Cookies '+S.cookies+'</span>'+
+    '<span class="chip" data-k="cat">'+UI("cat","🐱")+' Cat bond '+S.cat+'</span>'+
+    (S.boost>0?'<span class="chip pl" style="background:#ffd9d2;font-weight:700">📣 Cheer Boost ×1.5 ('+S.boost+' left)</span>':'')+
+    (S.hw>0?'<span class="chip pl" style="background:#e3dcf7;font-weight:700">📝 Homework: '+S.hw+' study left</span>':'')+
+    (isConfDay()?'<span class="chip pl" style="background:#d8ecff;font-weight:700">🎤 Conference today!</span>':'');
   hudChanges();
 }
 var HP=null;
