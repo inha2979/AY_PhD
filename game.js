@@ -1993,7 +1993,29 @@ function maybeEvent(){
 if(LAB)window.__MG={star:startStar,rh:startRhythm,cookie:startCookie,ev:maybeEvent,G:function(){return MG.G;},end:mgEnd,RH:RH};
 
 /* ---------- start ---------- */
+var OPENVID="assets/opening.mp4",openBusy=false;
+function playOpening(cb){
+  openBusy=true;quiet=true;
+  var stage=document.getElementById("stage"),box=document.createElement("div");
+  box.style.cssText="position:absolute;inset:0;background:#000;z-index:60;display:flex;align-items:center;justify-content:center";
+  var v=document.createElement("video");v.src=OPENVID;v.playsInline=true;v.setAttribute("playsinline","");v.preload="auto";
+  v.style.cssText="width:100%;height:100%;object-fit:contain;background:#000";
+  var sk=document.createElement("button");sk.className="btn";sk.textContent="Skip ▶▶";
+  sk.style.cssText="position:absolute;right:8px;bottom:8px;padding:5px 12px;font-size:13px;opacity:.85;z-index:2";
+  var done=false;
+  function end(){if(done)return;done=true;try{v.pause();}catch(e){}box.remove();quiet=false;openBusy=false;cb();}
+  sk.onclick=function(e){e.stopPropagation();end();};
+  v.onended=end;v.onerror=end;
+  box.appendChild(v);box.appendChild(sk);stage.appendChild(box);
+  var pr=v.play();if(pr&&pr.catch)pr.catch(function(){v.muted=true;var p2=v.play();if(p2&&p2.catch)p2.catch(end);});
+}
 function startGame(fresh){
+  if(!ready||openBusy)return;
+  var d0=load(),isNew=(fresh===true)||!(d0&&d0.S&&!d0.S.ended);
+  if(OPENVID&&isNew){audioInit();playOpening(function(){startGame2(fresh);});return;}
+  startGame2(fresh);
+}
+function startGame2(fresh){
   if(!ready)return;
   audioInit();
   var v=document.getElementById("nameIn").value.trim();
